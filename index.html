@@ -1,1 +1,52 @@
 
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>fernbit.exe</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="desktop">
+      <section class="window" aria-label="fernbit window">
+        <header class="title-bar">
+          <span class="title-text">fernbit.exe</span>
+          <div class="title-actions" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </header>
+
+        <div class="window-content">
+          <h1 class="brand">
+            <a href="transmissions.html" class="brand-link">fernbit</a>
+          </h1>
+          <p class="tagline type-target" data-text="small signals across distance"></p>
+
+          <nav aria-label="main navigation">
+            <ul class="nav-list">
+              <li><a href="#" class="nav-link">projects</a></li>
+              <li><a href="#" class="nav-link">writing</a></li>
+              <li><a href="#" class="nav-link">lab</a></li>
+            </ul>
+          </nav>
+
+          <p class="contact">contact me at:<br /><a href="mailto:sophia@fernbit.net">sophia@fernbit.net</a></p>
+
+          <section class="system-status" aria-label="system status">
+            <p>system status: online</p>
+            <p>signal strength: stable</p>
+            <p>internet weather: <span id="internet-weather">calm</span></p>
+            <p>last transmission received: <span id="last-updated"></span></p>
+          </section>
+
+          <p class="cursor-line" aria-hidden="true">&gt; <span class="cursor">_</span></p>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
