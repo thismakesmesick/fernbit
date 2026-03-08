@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fernbit Station</title>
+    <style>
+      :root {
+        --cream: #f8f1df;
+        --green: #1d4d3a;
+        --orange: #e58c3a;
+        --green-soft: #2c6750;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at top, #fff7e8 0%, var(--cream) 65%);
+        color: var(--green);
+        font-family: "IBM Plex Mono", "Courier New", monospace;
+        display: grid;
+        place-items: center;
+        padding: 2rem 1rem;
+      }
+
+      .station {
+        width: min(760px, 100%);
+        background: rgba(255, 255, 255, 0.35);
+        border: 2px solid rgba(29, 77, 58, 0.28);
+        border-radius: 18px;
+        box-shadow: 0 18px 40px rgba(29, 77, 58, 0.08);
+        padding: clamp(1.2rem, 3vw, 2rem);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .station::before,
+      .station::after {
+        content: "";
+        position: absolute;
+        pointer-events: none;
+      }
+
+      .station::before {
+        inset: auto -20% -52% auto;
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(229, 140, 58, 0.08), transparent 70%);
+      }
+
+      .station::after {
+        inset: 0;
+        background: repeating-linear-gradient(
+          180deg,
+          transparent,
+          transparent 42px,
+          rgba(29, 77, 58, 0.025) 42px,
+          rgba(29, 77, 58, 0.025) 43px
+        );
+      }
+
+      header,
+      .board {
+        position: relative;
+        z-index: 1;
+      }
+
+      .line-icons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.05rem;
+        color: var(--green-soft);
+        margin-bottom: 0.9rem;
+      }
+
+      .line-icons span:last-child {
+        color: var(--orange);
+      }
+
+      h1 {
+        margin: 0;
+        letter-spacing: 0.2em;
+        font-size: clamp(1.4rem, 5vw, 2.2rem);
+        color: var(--green);
+      }
+
+      .subtitle {
+        margin: 0.45rem 0 1.4rem;
+        color: rgba(29, 77, 58, 0.82);
+        font-size: clamp(0.82rem, 2.3vw, 1rem);
+        letter-spacing: 0.08em;
+      }
+
+      .board {
+        background: #1d3f31;
+        color: #f9f4e8;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: clamp(1rem, 3vw, 1.5rem);
+      }
+
+      .board h2 {
+        margin: 0 0 0.85rem;
+        color: var(--orange);
+        font-size: 0.95rem;
+        letter-spacing: 0.22em;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: minmax(112px, 1fr) auto minmax(112px, 1fr);
+        gap: 0.55rem;
+        align-items: center;
+        padding: 0.45rem 0;
+        text-decoration: none;
+        color: inherit;
+        border-radius: 6px;
+        transition: transform 180ms ease, background-color 180ms ease, color 180ms ease;
+      }
+
+      .row .dots {
+        opacity: 0.5;
+        letter-spacing: 0.2em;
+        text-align: center;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .row .platform {
+        justify-self: end;
+        color: rgba(249, 244, 232, 0.85);
+      }
+
+      .row:hover,
+      .row:focus-visible {
+        background: rgba(229, 140, 58, 0.14);
+        color: #fff9eb;
+        transform: translateX(3px);
+        outline: none;
+      }
+
+      .row:hover .platform,
+      .row:focus-visible .platform {
+        color: #ffd9ad;
+      }
+
+      footer {
+        margin-top: 1rem;
+        font-size: 0.75rem;
+        color: rgba(29, 77, 58, 0.7);
+        letter-spacing: 0.08em;
+      }
+
+      @media (max-width: 520px) {
+        .row {
+          grid-template-columns: 1fr auto;
+          grid-template-areas:
+            "label platform"
+            "dots dots";
+          gap: 0.15rem 0.4rem;
+        }
+
+        .row .label {
+          grid-area: label;
+        }
+
+        .row .platform {
+          grid-area: platform;
+        }
+
+        .row .dots {
+          grid-area: dots;
+          text-align: left;
+          letter-spacing: 0.12em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="station">
+      <header>
+        <div class="line-icons" aria-hidden="true">
+          <span>🚂</span>
+          <span>🍃</span>
+        </div>
+        <h1>FERNBIT STATION</h1>
+        <p class="subtitle">small signals across distance</p>
+      </header>
+
+      <section class="board" aria-label="departure board">
+        <h2>DEPARTURES</h2>
+
+        <a class="row" href="#projects">
+          <span class="label">projects</span>
+          <span class="dots">.............</span>
+          <span class="platform">platform 1</span>
+        </a>
+
+        <a class="row" href="#writing">
+          <span class="label">writing</span>
+          <span class="dots">.............</span>
+          <span class="platform">platform 2</span>
+        </a>
+
+        <a class="row" href="#lab">
+          <span class="label">lab</span>
+          <span class="dots">.................</span>
+          <span class="platform">platform 3</span>
+        </a>
+
+        <a class="row" href="#contact">
+          <span class="label">contact</span>
+          <span class="dots">.............</span>
+          <span class="platform">platform 4</span>
+        </a>
+      </section>
+
+      <footer>quiet stop • fernbit.net</footer>
+    </main>
+  </body>
+</html>
