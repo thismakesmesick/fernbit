@@ -211,3 +211,18 @@ body {
   }
 
 }
+.transmission {
+margin-bottom: 1rem;
+padding-bottom: 0.6rem;
+border-bottom: 1px dashed #d9cfbe;
+}
+
+.signal-header {
+font-weight: bold;
+margin: 0;
+color: var(--accent);
+}
+
+.signal-body {
+margin: 0.25rem 0 0;
+}
