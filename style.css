@@ -1,6 +1,64 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 body,
 body *,
 body *::before,
 body *::after {
   cursor: url("cursor.png") 16 16, auto !important;
+}
+
+.machine-scene {
+  position: relative;
+  display: inline-block;
+}
+
+.machine-scene img {
+  display: block;
+  max-width: 100vw;
+  max-height: 100vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.screen-text {
+  position: absolute;
+  top: 31.5%;
+  left: 49%;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #87ff7b;
+  text-shadow: 0 0 8px rgba(135, 255, 123, 0.55);
+  font-family: "Courier New", Courier, monospace;
+  font-size: clamp(18px, 2.7vw, 42px);
+  letter-spacing: 0.12em;
+  transform: translate(-50%, -50%) skewX(-11deg) rotate(-1.5deg);
+}
+
+body:hover .screen-text {
+  animation: type-hello 1.2s steps(6, end) forwards;
+}
+
+@keyframes type-hello {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 6ch;
+  }
 }
