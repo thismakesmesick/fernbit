@@ -36,12 +36,12 @@ body *::after {
 
 .screen-text {
   position: absolute;
-  top: 31.5%;
+  top: 60%;
   left: 49%;
   width: 0;
   overflow: hidden;
   white-space: nowrap;
-  color: #87ff7b;
+  color: #000000;
   text-shadow: 0 0 8px rgba(135, 255, 123, 0.55);
   font-family: "Courier New", Courier, monospace;
   font-size: clamp(18px, 2.7vw, 42px);
