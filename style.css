@@ -41,8 +41,8 @@ body *::after {
   width: 0;
   overflow: hidden;
   white-space: nowrap;
-  color: #232413;
-  text-shadow: 0 0 8px rgba(135, 255, 123, 0.55);
+  color: #f01aa5;
+  text-shadow: 0 0 8px rgba(240, 26, 62, 0.55);
   font-family: "Courier New", Courier, monospace;
   font-size: clamp(18px, 2.7vw, 42px);
   letter-spacing: 0.12em;
