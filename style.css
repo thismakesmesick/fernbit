@@ -37,7 +37,7 @@ body *::after {
 .screen-text {
   position: absolute;
   top: 40%;
-  left: 49%;
+  left: 52%;
   width: 0;
   overflow: hidden;
   white-space: nowrap;
