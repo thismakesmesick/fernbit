@@ -66,32 +66,11 @@
   <script>
     const posts = [
       {
-        date: "2026-03-15",
-        title: "Signals in the Noise",
-        url: "./posts/example-post.html",
-        tags: ["obligatory highpost", "therapy"],
-        excerpt: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus."
-      },
-      {
-        date: "2026-03-14",
-        title: "Pink Static",
-        url: "./posts/2026-03-14-pink-static.html",
-        tags: ["journal"],
-        excerpt: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus."
-      },
-      {
-        date: "2025-12-22",
-        title: "Winter Solstice Notes",
-        url: "./posts/2025-12-22-winter-solstice-notes.html",
-        tags: ["seasonal"],
-        excerpt: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus."
-      },
-      {
-        date: "2025-03-15",
-        title: "March Echoes",
-        url: "./posts/2025-03-15-march-echoes.html",
-        tags: ["memory"],
-        excerpt: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus."
+        date: "",
+        title: "",
+        url: "",
+        tags: [],
+        excerpt: ""
       }
     ];
 
@@ -120,15 +99,26 @@
       }, {});
     }
 
-    const sortedPosts = [...posts].sort((a, b) => b.date.localeCompare(a.date));
+    const validPosts = posts.filter((post) => {
+      return /^\d{4}-\d{2}-\d{2}$/.test(post.date)
+        && Boolean(post.title)
+        && Boolean(post.url);
+    });
+
+    const sortedPosts = [...validPosts].sort((a, b) => b.date.localeCompare(a.date));
 
     const latest = sortedPosts[0];
     const latestEl = document.getElementById("latestPost");
-    latestEl.innerHTML = `
+    latestEl.innerHTML = latest ? `
       <h3><a href="${latest.url}">${latest.title}</a></h3>
       <p class="small-muted">${formatLongDate(latest.date)}</p>
       <p>${latest.excerpt ?? ""}</p>
       <p><a href="${latest.url}">Read full post →</a></p>
+    ` : `
+      <h3><a href="">&nbsp;</a></h3>
+      <p class="small-muted">&nbsp;</p>
+      <p>&nbsp;</p>
+      <p><a href="">&nbsp;</a></p>
     `;
 
     const grouped = groupByYear(sortedPosts);
@@ -157,7 +147,7 @@
     const matches = sortedPosts.filter((post) => post.date.slice(5) === `${month}-${day}`);
 
     if (matches.length === 0) {
-      onThisDayEl.textContent = "No matching posts for today yet.";
+      onThisDayEl.textContent = "";
     } else {
       onThisDayEl.innerHTML = `
         <ul class="on-this-day-list">
@@ -226,7 +216,7 @@
         return;
       }
 
-      const matchedPost = posts.find((post) => post.date === value);
+      const matchedPost = validPosts.find((post) => post.date === value);
       if (matchedPost) {
         window.location.href = matchedPost.url;
       } else {
