@@ -45,6 +45,20 @@
     </aside>
   </main>
 
+   <section id="moodCalendar" class="pixel-panel mood-calendar" aria-label="Monthly mood calendar">
+    <div class="mood-header-row">
+      <button class="mood-nav" data-nav="prev" aria-label="Previous month">←</button>
+      <h2 class="mood-month" data-month-label>Month</h2>
+      <button class="mood-nav" data-nav="next" aria-label="Next month">→</button>
+    </div>
+
+    <div class="mood-grid" data-mood-grid aria-hidden="true"></div>
+    <p class="mood-year" data-year-label>Year</p>
+  </section>
+
+  <script src="./mood-data.js"></script>
+  <script src="./mood-calendar.js"></script>
+
   <script>
     // Add more posts here over time:
     const posts = [
