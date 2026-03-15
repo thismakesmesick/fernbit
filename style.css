@@ -62,3 +62,36 @@ body:hover .screen-text {
     width: 6ch;
   }
 }
+.paper-link {
+  position: absolute;
+  left: 4%;
+  top: 64%;
+  width: 24%;
+  height: 28%;
+  display: block;
+  text-decoration: none;
+}
+
+.paper-tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translate(-50%, -8px);
+  padding: 3px 6px;
+  border: 1px solid #111;
+  background: #f9f2d0;
+  color: #111;
+  font-family: "Courier New", "Lucida Console", monospace;
+  font-size: 11px;
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: 1px 1px 0 #000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+}
+
+.paper-link:hover .paper-tooltip,
+.paper-link:focus-visible .paper-tooltip {
+  opacity: 1;
+}
