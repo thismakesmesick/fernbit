@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog Archive</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="blog-layout">
+    <!-- Main center container -->
+    <section class="pixel-panel" aria-labelledby="latest-post-heading">
+      <h1 id="latest-post-heading">Most Recent Post</h1>
+      <div id="latestPost" class="post-preview">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div class="section-stack">
+        <h2>On This Day</h2>
+        <div id="onThisDay" class="small-muted">Checking records...</div>
+      </div>
+
+      <div class="section-stack">
+        <h2>Search by Date</h2>
+        <form id="dateSearchForm" class="date-search" autocomplete="off">
+          <input
+            id="dateInput"
+            type="text"
+            inputmode="numeric"
+            pattern="\\d{4}-\\d{2}-\\d{2}"
+            placeholder="YYYY-MM-DD"
+            aria-label="Search date in format YYYY-MM-DD"
+            required
+          />
+          <button type="submit">Go</button>
+        </form>
+        <div id="searchNotice" class="notice small-muted"></div>
+      </div>
+    </section>
+
+    <!-- Sidebar archive -->
+    <aside class="pixel-panel alt archive-sidebar" aria-labelledby="archive-heading">
+      <h2 id="archive-heading">Blog Archive</h2>
+      <div id="archiveList"></div>
+    </aside>
+  </main>
+
+  <script>
+    // Add more posts here over time:
+    const posts = [
+      {
+        date: "2026-03-15",
+        title: "Signals in the Noise",
+        url: "./posts/example-post.html",
+        tags: ["obligatory highpost", "therapy"],
+        excerpt: "A short note on stray frequencies, insomnia, and learning to listen anyway."
+      },
+      {
+        date: "2026-03-14",
+        title: "Pink Static",
+        url: "./posts/2026-03-14-pink-static.html",
+        tags: ["journal"],
+        excerpt: "Color bleed, old radios, and finding calm in the hiss."
+      },
+      {
+        date: "2025-12-22",
+        title: "Winter Solstice Notes",
+        url: "./posts/2025-12-22-winter-solstice-notes.html",
+        tags: ["seasonal"],
+        excerpt: "Longest night reflections from a warm desk light."
+      },
+      {
+        date: "2025-03-15",
+        title: "March Echoes",
+        url: "./posts/2025-03-15-march-echoes.html",
+        tags: ["memory"],
+        excerpt: "A previous-year entry for On This Day."
+      }
+    ];
+
+    const MONTH_NAMES = [
+      "January","February","March","April","May","June",
+      "July","August","September","October","November","December"
+    ];
+
+    function formatLongDate(yyyyMmDd) {
+      const [y, m, d] = yyyyMmDd.split("-").map(Number);
+      return `${MONTH_NAMES[m - 1]} ${d}, ${y}`;
+    }
+
+    function formatArchiveDate(yyyyMmDd) {
+      const [_, m, d] = yyyyMmDd.split("-").map(Number);
+      const shortMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      return `${shortMonths[m - 1]} ${String(d).padStart(2, "0")}`;
+    }
+
+    function groupByYear(items) {
+      return items.reduce((acc, post) => {
+        const year = post.date.slice(0, 4);
+        if (!acc[year]) acc[year] = [];
+        acc[year].push(post);
+        return acc;
+      }, {});
+    }
+
+    const sortedPosts = [...posts].sort((a, b) => b.date.localeCompare(a.date));
+
+    // Most recent post preview
+    const latest = sortedPosts[0];
+    const latestEl = document.getElementById("latestPost");
+    latestEl.innerHTML = `
+      <h3><a href="${latest.url}">${latest.title}</a></h3>
+      <p class="small-muted">${formatLongDate(latest.date)}</p>
+      <p>${latest.excerpt ?? ""}</p>
+      <p><a href="${latest.url}">Read full post →</a></p>
+    `;
+
+    // Archive rendering
+    const grouped = groupByYear(sortedPosts);
+    const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));
+    const archiveRoot = document.getElementById("archiveList");
+    archiveRoot.innerHTML = years.map(year => {
+      const postItems = grouped[year].map(post => `
+        <li>
+          <a href="${post.url}">
+            ${formatArchiveDate(post.date)} — ${post.title}
+          </a>
+        </li>
+      `).join("");
+      return `
+        <section class="archive-year">
+          <h3>${year}</h3>
+          <ul class="archive-list">${postItems}</ul>
+        </section>
+      `;
+    }).join("");
+
+    // On This Day
+    const onThisDayEl = document.getElementById("onThisDay");
+    const now = new Date();
+    const mm = String(now.getMonth() + 1).padStart(2, "0");
+    const dd = String(now.getDate()).padStart(2, "0");
+    const matches = sortedPosts.filter(p => p.date.slice(5) === `${mm}-${dd}`);
+
+    if (matches.length === 0) {
+      onThisDayEl.textContent = "No matching posts for today yet.";
+    } else {
+      onThisDayEl.innerHTML = matches.map(p =>
+        `<div><a href="${p.url}">${formatLongDate(p.date)} — ${p.title}</a></div>`
+      ).join("");
+    }
+
+    // Search by date
+    const form = document.getElementById("dateSearchForm");
+    const input = document.getElementById("dateInput");
+    const notice = document.getElementById("searchNotice");
+
+    async function exists(url) {
+      try {
+        const resp = await fetch(url, { method: "HEAD" });
+        if (resp.ok) return true;
+      } catch (_) {}
+      try {
+        const resp2 = await fetch(url, { method: "GET" });
+        return resp2.ok;
+      } catch (_) {
+        return false;
+      }
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      notice.textContent = "";
+
+      const value = input.value.trim();
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+        notice.textContent = "Please use YYYY-MM-DD format.";
+        return;
+      }
+
+      // Requirement: try filename by date first.
+      const dateFilenameUrl = `./posts/${value}.html`;
+      if (await exists(dateFilenameUrl)) {
+        window.location.href = dateFilenameUrl;
+        return;
+      }
+
+      // Fallback to metadata date match (useful if filenames include slugs).
+      const matchedPost = posts.find(p => p.date === value);
+      if (matchedPost) {
+        window.location.href = matchedPost.url;
+      } else {
+        notice.textContent = "No post found for that date.";
+      }
+    });
+  </script>
+</body>
+</html>
