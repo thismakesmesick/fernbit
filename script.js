@@ -1,6 +1,6 @@
 const BLOG_URL = "/blog.html";
 
-// If you share a specific hex, replace/add it here.
+// IF YOU CHANGE THE PAPER COLOUR MAKE SURE TO CHANGE IT HERE TOO
 const PAPER_COLORS = ["#efc17b"];
 const PAPER_TOLERANCE = 48;
 
