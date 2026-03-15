@@ -8,19 +8,18 @@
 </head>
 <body>
   <main class="blog-layout">
-    <!-- Main center container -->
-    <section class="pixel-panel" aria-labelledby="latest-post-heading">
+    <section class="pixel-panel latest-panel" aria-labelledby="latest-post-heading">
       <h1 id="latest-post-heading">Most Recent Post</h1>
       <div id="latestPost" class="post-preview">
         <!-- Rendered by JS -->
       </div>
 
-      <div class="section-stack">
+      <div id="mobileOnThisDaySection" class="section-stack">
         <h2>On This Day</h2>
         <div id="onThisDay" class="small-muted">Checking records...</div>
       </div>
 
-      <div class="section-stack">
+      <div id="mobileSearchSection" class="section-stack">
         <h2>Search by Date</h2>
         <form id="dateSearchForm" class="date-search" autocomplete="off">
           <input
@@ -38,14 +37,19 @@
       </div>
     </section>
 
-    <!-- Sidebar archive -->
     <aside class="pixel-panel alt archive-sidebar" aria-labelledby="archive-heading">
       <h2 id="archive-heading">Blog Archive</h2>
-      <div id="archiveList"></div>
+      <div id="archiveList" class="archive-scroll"></div>
+      <div id="desktopSearchSlot"></div>
+    </aside>
+
+    <aside class="pixel-panel alt on-this-day-sidebar" aria-labelledby="on-this-day-heading">
+      <h2 id="on-this-day-heading">On This Day</h2>
+      <div id="desktopOnThisDaySlot"></div>
     </aside>
   </main>
 
-   <section id="moodCalendar" class="pixel-panel mood-calendar" aria-label="Monthly mood calendar">
+  <section id="moodCalendar" class="pixel-panel mood-calendar" aria-label="Monthly mood calendar">
     <div class="mood-header-row">
       <button class="mood-nav" data-nav="prev" aria-label="Previous month">←</button>
       <h2 class="mood-month" data-month-label>Month</h2>
@@ -60,41 +64,40 @@
   <script src="./mood-calendar.js"></script>
 
   <script>
-    // Add more posts here over time:
     const posts = [
       {
         date: "2026-03-15",
         title: "Signals in the Noise",
         url: "./posts/example-post.html",
         tags: ["obligatory highpost", "therapy"],
-        excerpt: "A short note on stray frequencies, insomnia, and learning to listen anyway."
+        excerpt: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus."
       },
       {
         date: "2026-03-14",
         title: "Pink Static",
         url: "./posts/2026-03-14-pink-static.html",
         tags: ["journal"],
-        excerpt: "Color bleed, old radios, and finding calm in the hiss."
+        excerpt: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus."
       },
       {
         date: "2025-12-22",
         title: "Winter Solstice Notes",
         url: "./posts/2025-12-22-winter-solstice-notes.html",
         tags: ["seasonal"],
-        excerpt: "Longest night reflections from a warm desk light."
+        excerpt: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus."
       },
       {
         date: "2025-03-15",
         title: "March Echoes",
         url: "./posts/2025-03-15-march-echoes.html",
         tags: ["memory"],
-        excerpt: "A previous-year entry for On This Day."
+        excerpt: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus."
       }
     ];
 
     const MONTH_NAMES = [
-      "January","February","March","April","May","June",
-      "July","August","September","October","November","December"
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
     ];
 
     function formatLongDate(yyyyMmDd) {
@@ -104,7 +107,7 @@
 
     function formatArchiveDate(yyyyMmDd) {
       const [_, m, d] = yyyyMmDd.split("-").map(Number);
-      const shortMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      const shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       return `${shortMonths[m - 1]} ${String(d).padStart(2, "0")}`;
     }
 
@@ -119,7 +122,6 @@
 
     const sortedPosts = [...posts].sort((a, b) => b.date.localeCompare(a.date));
 
-    // Most recent post preview
     const latest = sortedPosts[0];
     const latestEl = document.getElementById("latestPost");
     latestEl.innerHTML = `
@@ -129,12 +131,11 @@
       <p><a href="${latest.url}">Read full post →</a></p>
     `;
 
-    // Archive rendering
     const grouped = groupByYear(sortedPosts);
     const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));
     const archiveRoot = document.getElementById("archiveList");
-    archiveRoot.innerHTML = years.map(year => {
-      const postItems = grouped[year].map(post => `
+    archiveRoot.innerHTML = years.map((year) => {
+      const postItems = grouped[year].map((post) => `
         <li>
           <a href="${post.url}">
             ${formatArchiveDate(post.date)} — ${post.title}
@@ -149,22 +150,49 @@
       `;
     }).join("");
 
-    // On This Day
     const onThisDayEl = document.getElementById("onThisDay");
-    const now = new Date();
-    const mm = String(now.getMonth() + 1).padStart(2, "0");
-    const dd = String(now.getDate()).padStart(2, "0");
-    const matches = sortedPosts.filter(p => p.date.slice(5) === `${mm}-${dd}`);
+    const today = new Date();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    const matches = sortedPosts.filter((post) => post.date.slice(5) === `${month}-${day}`);
 
     if (matches.length === 0) {
       onThisDayEl.textContent = "No matching posts for today yet.";
     } else {
-      onThisDayEl.innerHTML = matches.map(p =>
-        `<div><a href="${p.url}">${formatLongDate(p.date)} — ${p.title}</a></div>`
-      ).join("");
+      onThisDayEl.innerHTML = `
+        <ul class="on-this-day-list">
+          ${matches.map((post) => `
+            <li><a href="${post.url}">${formatLongDate(post.date)} — ${post.title}</a></li>
+          `).join("")}
+        </ul>
+      `;
     }
 
-    // Search by date
+    const desktopMediaQuery = window.matchMedia("(min-width: 900px)");
+    const mobileSearchSection = document.getElementById("mobileSearchSection");
+    const mobileOnThisDaySection = document.getElementById("mobileOnThisDaySection");
+    const desktopSearchSlot = document.getElementById("desktopSearchSlot");
+    const desktopOnThisDaySlot = document.getElementById("desktopOnThisDaySlot");
+
+    function syncDesktopLayout() {
+      if (desktopMediaQuery.matches) {
+        desktopSearchSlot.appendChild(mobileSearchSection);
+        desktopOnThisDaySlot.appendChild(onThisDayEl);
+        mobileOnThisDaySection.hidden = true;
+      } else {
+        mobileOnThisDaySection.appendChild(onThisDayEl);
+        mobileOnThisDaySection.hidden = false;
+        latestEl.parentElement.appendChild(mobileSearchSection);
+      }
+    }
+
+    if (desktopMediaQuery.addEventListener) {
+      desktopMediaQuery.addEventListener("change", syncDesktopLayout);
+    } else {
+      desktopMediaQuery.addListener(syncDesktopLayout);
+    }
+    syncDesktopLayout();
+
     const form = document.getElementById("dateSearchForm");
     const input = document.getElementById("dateInput");
     const notice = document.getElementById("searchNotice");
@@ -192,15 +220,13 @@
         return;
       }
 
-      // Requirement: try filename by date first.
       const dateFilenameUrl = `./posts/${value}.html`;
       if (await exists(dateFilenameUrl)) {
         window.location.href = dateFilenameUrl;
         return;
       }
 
-      // Fallback to metadata date match (useful if filenames include slugs).
-      const matchedPost = posts.find(p => p.date === value);
+      const matchedPost = posts.find((post) => post.date === value);
       if (matchedPost) {
         window.location.href = matchedPost.url;
       } else {
