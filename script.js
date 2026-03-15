@@ -1,7 +1,7 @@
 const BLOG_URL = "/blog.html";
 
 // If you share a specific hex, replace/add it here.
-const PAPER_COLORS = ["#f9f2d0", "#efe6c4", "#ddd3ae"];
+const PAPER_COLORS = ["#efc17b"];
 const PAPER_TOLERANCE = 48;
 
 const image = document.getElementById("machine-image");
