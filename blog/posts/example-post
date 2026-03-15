@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signals in the Noise</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="post-shell">
+    <a class="back-link" href="../index.html">← Back to Blog Archive</a>
+
+    <article class="pixel-panel" aria-labelledby="post-title">
+      <h1 id="post-title">Signals in the Noise</h1>
+      <p class="small-muted">March 15, 2026</p>
+
+      <section aria-label="Tags">
+        <strong>Tags:</strong>
+        <div class="tags">
+          <span class="tag">obligatory highpost</span>
+          <span class="tag">therapy</span>
+        </div>
+      </section>
+
+      <section class="post-content" aria-label="Main content">
+        <p>
+          The room had that electric hush again—the one that arrives after midnight,
+          when every little sound feels like a transmission from somewhere else.
+        </p>
+        <p>
+          I wrote this down to remember the feeling: static is not always interference.
+          Sometimes it is evidence that the line is still alive.
+        </p>
+      </section>
+
+      <section class="permalink-row" aria-label="Permalink">
+        <strong>Permalink:</strong>
+        <span id="permalinkText"></span>
+        <button type="button" class="copy-btn" id="copyPermalinkBtn">Copy Permalink</button>
+        <span id="copyStatus" class="small-muted" aria-live="polite"></span>
+      </section>
+    </article>
+  </main>
+
+  <script>
+    const permalinkText = document.getElementById("permalinkText");
+    const copyBtn = document.getElementById("copyPermalinkBtn");
+    const copyStatus = document.getElementById("copyStatus");
+
+    const fullUrl = window.location.href;
+    permalinkText.textContent = fullUrl;
+
+    copyBtn.addEventListener("click", async () => {
+      copyStatus.textContent = "";
+      try {
+        await navigator.clipboard.writeText(fullUrl);
+        copyStatus.textContent = "Copied!";
+      } catch (_) {
+        copyStatus.textContent = "Copy failed. You can manually copy the URL above.";
+      }
+    });
+  </script>
+</body>
+</html>
