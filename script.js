@@ -1,4 +1,4 @@
-const BLOG_URL = "/blog.html";
+const BLOG_URL = "/blog/";
 
 // IF YOU CHANGE THE PAPER COLOUR MAKE SURE TO CHANGE IT HERE TOO
 const PAPER_COLORS = ["#efc17b"];
