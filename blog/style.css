@@ -169,6 +169,17 @@ h1, h2, h3 {
   align-items: center;
   word-break: break-all;
 }
+@media (min-width: 1200px) {
+  .blog-layout {
+    max-width: min(1600px, 92vw);
+    grid-template-columns: minmax(780px, 2.2fr) minmax(320px, 1fr);
+    gap: 22px;
+  }
+
+  .pixel-panel {
+    padding: 20px;
+  }
+}
 
 @media (max-width: 860px) {
   .blog-layout {
