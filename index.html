@@ -1,21 +1,36 @@
 <!DOCTYPE html>
+<!-- I start with the doctype so the browser knows I want modern HTML rules instead of weird older compatibility behavior. -->
 <html lang="en">
+<!-- I wrap the whole page in <html>. I set lang="en" so browsers, screen readers, and search engines know the main language of my content. -->
 <head>
+    <!-- I use <head> for information about the page itself, not for visible page content. -->
     <meta charset="UTF-8">
+    <!-- I set the character encoding to UTF-8 so text symbols and punctuation display correctly. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- I add the viewport meta tag so the layout scales properly on phones instead of pretending the page is desktop-width. -->
     <title>fernbit</title>
+    <!-- I use <title> to control the name shown in the browser tab and bookmarks. -->
     <link rel="stylesheet" href="style.css">
+    <!-- I load my shared CSS file here so this page can reuse one visual system instead of stuffing styles into the HTML. -->
 </head>
 <body>
-    <!-- Header Section: Site title and tagline -->
+    <!-- I use <body> for everything the visitor actually sees on the page. -->
+
+    <!-- I use <header> for the top intro area of the page because this section introduces the site. -->
     <header id="fernbit">
+        <!-- I use an id when I want one specific element to have a unique hook for styling or scripting. -->
         <h1>fernbit</h1>
+        <!-- I use <h1> for the main page heading. This is the highest heading level and tells both people and machines what the page is mainly about. -->
         <p>screen vomit, practicing and shit</p>
+        <!-- I use <p> for a paragraph of normal text. I only explain this once because I use paragraphs a lot across the site. -->
     </header>
 
-    <!-- Navigation Section: Menu for site pages -->
+    <!-- I use <nav> for grouped navigation links so the site menu is clearly marked as navigation. -->
     <nav id="main-navigation">
+        <!-- I use <ul> for a list of links because the menu is a list of equal navigation choices. -->
         <ul>
+            <!-- I use <li> for each individual list item inside the unordered list. -->
+            <!-- I use <a> to create a clickable link to another page. The href tells the browser where to go. -->
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="blog.html">Blog</a></li>
@@ -23,14 +38,17 @@
         </ul>
     </nav>
 
-    <!-- Main Content Section: Primary content area -->
+    <!-- I use <main> for the primary content of this page. There should only be one main landmark per page. -->
     <main id="main-content">
-        <!-- Home Section: Welcome message -->
+        <!-- I use <section> to group related content into one meaningful chunk. -->
         <section id="home">
             <h2>Here it is</h2>
+            <!-- I use <h2> for the next heading level under the main page title. -->
             <p>last update: 25-04-26 / I wiped the original sitemap and decided to start fresh and more basic. Medium stoned!</p>
         </section>
     </main>
+
+    <!-- I use <footer> for closing information about the page or site. -->
     <footer id="site-footer">
         <p>&copy; 2026 Penny & Cole. All rights reserved.</p>
     </footer>

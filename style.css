@@ -1,27 +1,32 @@
-/* Base page styles */
+/* I start in :root because it is the top-level CSS scope for the whole document and a good place for site-wide defaults. */
 :root {
+    /* I tell the browser this site is designed as a dark interface so built-in UI choices can match better. */
     color-scheme: dark;
     background-color: #000000;
     color: #ffffff;
+    /* I set the default font once here so every element inherits it unless I intentionally override it later. */
     font-family: "Courier New", Courier, monospace;
     line-height: 1.6;
 }
 
-/* Body and page container */
+/* I target html and body together because both affect the outer page box. */
 html, body {
     margin: 0;
+    /* I remove the browser's default page margin so my layout starts from a clean edge. */
     min-height: 100%;
     background-color: #000000;
 }
 
 body {
+    /* I use padding on body to create breathing room around the content without wrapping everything in another container. */
     padding: 2rem;
     letter-spacing: 0.03em;
 }
 
-/* Header area */
+/* I target an id with # because this selector is meant for one unique element. */
 #fernbit {
     max-width: 900px;
+    /* I use margin: 0 auto to center a block element horizontally when it has a width limit. */
     margin: 0 auto 2rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid #444;
@@ -29,6 +34,7 @@ body {
 
 #fernbit h1 {
     margin: 0 0 0.5rem;
+    /* I use clamp() so the heading can scale with screen size without becoming ridiculously huge or tiny. */
     font-size: clamp(2rem, 4vw, 4rem);
     text-transform: uppercase;
 }
@@ -38,7 +44,7 @@ body {
     color: #bbb;
 }
 
-/* Navigation menu */
+/* I use flexbox in the nav list because it makes horizontal layout with gaps simple. */
 #main-navigation {
     max-width: 900px;
     margin: 0 auto 2rem;
@@ -46,10 +52,12 @@ body {
 
 #main-navigation ul {
     list-style: none;
+    /* I remove list styling because the browser adds bullets and indentation by default. */
     padding: 0;
     margin: 0;
     display: flex;
     flex-wrap: wrap;
+    /* I let items wrap so the nav does not explode off-screen on smaller widths. */
     gap: 1rem;
 }
 
@@ -61,11 +69,12 @@ body {
 
 #main-navigation a:hover,
 #main-navigation a:focus {
+    /* I style hover and keyboard focus together so both mouse users and keyboard users get feedback. */
     color: #f5f5f5;
     border-color: #888;
 }
 
-/* Main content and sections */
+/* I keep main content width limited for readability, because full-width text is harder to scan. */
 #main-content {
     max-width: 900px;
     margin: 0 auto;
@@ -94,50 +103,18 @@ p {
     color: #eaeaea;
 }
 
-/* Blog controls */
-#blog-controls {
-    margin-bottom: 1.5rem;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#search-box {
-    display: flex;
-    gap: 0.5rem;
-}
-
-#search-date {
-    flex: 1;
-    padding: 0.75rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 0.95rem;
-    transition: background-color 0.2s ease;
-}
-
-#search-date:focus {
-    outline: none;
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
-}
-
-#search-date::placeholder {
-    color: #666;
-}
-
-/* Scrollable container - shows 3 entries */
+/* I give the blog its own scroll area so long post lists do not force the whole page to become one giant column. */
 #blog-scroll-container {
     max-width: 900px;
     margin: 0 auto 2rem;
     max-height: 55vh;
+    /* I use vh here because I want the container height tied to the visible screen height. */
     overflow-y: auto;
     border: 1px solid rgba(255, 255, 255, 0.08);
     padding-right: 0.5rem;
 }
 
+/* I use the WebKit scrollbar pseudo-elements to lightly customize scrollbars in browsers that support them. */
 #blog-scroll-container::-webkit-scrollbar {
     width: 8px;
 }
@@ -160,15 +137,21 @@ p {
     padding: 0;
 }
 
-/* Blog entry styles */
-.blog-entry {
+.blog-status {
+    padding: 1rem;
+    margin: 0;
+    color: #999;
+}
+
+/* I use article.blog-entry to be specific: only <article> elements with this class should get these styles. */
+article.blog-entry {
     margin: 0;
     padding: 0;
     background: transparent;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.blog-entry:last-child {
+article.blog-entry:last-child {
     border-bottom: none;
 }
 
@@ -185,6 +168,7 @@ p {
     gap: 1rem;
     font-family: "Courier New", Courier, monospace;
     font-size: 1rem;
+    /* I use transition so hover/open state changes feel smoother instead of snapping instantly. */
     transition: background-color 0.2s ease;
     text-align: left;
 }
@@ -201,6 +185,7 @@ p {
     color: #999;
     font-size: 0.85rem;
     min-width: max-content;
+    /* I stop the date from shrinking because I want it to stay readable even when space gets tight. */
     flex-shrink: 0;
 }
 
@@ -214,10 +199,12 @@ p {
     padding: 1rem;
     background: rgba(255, 255, 255, 0.02);
     border-top: 1px solid rgba(255, 255, 255, 0.05);
+    /* I use an animation here to make opened content feel like it slides into place. */
     animation: slideDown 0.3s ease;
 }
 
 .entry-content-wrapper[hidden] {
+    /* I target the [hidden] attribute directly so CSS matches the same visibility state JavaScript is toggling. */
     display: none;
 }
 
@@ -227,175 +214,62 @@ p {
     line-height: 1.8;
 }
 
-/* New entry form */
-#new-entry-form {
-    max-width: 900px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+.entry-content > *:first-child {
+    /* I use child selectors here to tidy the spacing of markdown-generated HTML without caring exactly which element type comes first. */
+    margin-top: 0;
 }
 
-#entry-title,
-#entry-content {
-    padding: 0.75rem;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+.entry-content > *:last-child {
+    margin-bottom: 0;
+}
+
+.entry-content h1,
+.entry-content h2,
+.entry-content h3 {
+    margin: 1.5rem 0 0.75rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.04em;
+}
+
+.entry-content ul,
+.entry-content ol {
+    margin: 0 0 1rem 1.25rem;
+    padding: 0;
+}
+
+.entry-content li {
+    margin-bottom: 0.35rem;
+}
+
+.entry-content a {
     color: #ffffff;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 0.95rem;
-    transition: background-color 0.2s ease;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
 }
 
-#entry-title:focus,
-#entry-content:focus {
-    outline: none;
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.2);
+.entry-content code {
+    /* I style inline code differently so technical text stands out inside a paragraph. */
+    padding: 0.1rem 0.3rem;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 0.2rem;
 }
 
-#entry-title::placeholder,
-#entry-content::placeholder {
-    color: #666;
-}
-
-#entry-content {
-    resize: vertical;
-    min-height: 100px;
-}
-
-#add-entry-btn {
+.entry-content pre {
+    /* I let code blocks scroll horizontally instead of blowing up the layout on small screens. */
+    overflow-x: auto;
     padding: 0.75rem;
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-#add-entry-btn:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
-}
-
-#add-entry-btn:active {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-/* Utility classes */
+/* I use a utility class when I want one small reusable behavior instead of a full component style. */
 .hidden {
     display: none !important;
-}
-
-.error-msg {
-    color: #ff9999;
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
-    min-height: 1.2rem;
-}
-
-/* Admin section - Password gate */
-#admin-section {
-    max-width: 900px;
-    margin: 0 auto 2rem;
-}
-
-.auth-gate {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 2rem;
-    border-radius: 0;
-}
-
-#password-form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    max-width: 400px;
-}
-
-#password-form label {
-    color: #eaeaea;
-    font-size: 0.95rem;
-}
-
-#password-input {
-    padding: 0.75rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 0.95rem;
-    transition: background-color 0.2s ease;
-}
-
-#password-input:focus {
-    outline: none;
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
-}
-
-#password-input::placeholder {
-    color: #666;
-}
-
-#password-btn {
-    padding: 0.75rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-#password-btn:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
-}
-
-#entry-section.hidden {
-    display: none;
-}
-
-#entry-section {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 2rem;
-}
-
-#new-entry-form {
-    max-width: 900px;
-    margin: 0;
-}
-
-#auto-date {
-    color: #999;
-    font-size: 0.85rem;
-    margin: 0.5rem 0 1rem;
-}
-
-#logout-btn {
-    padding: 0.75rem;
-    background: rgba(255, 99, 99, 0.1);
-    border: 1px solid rgba(255, 99, 99, 0.3);
-    color: #ff9999;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-top: 0.5rem;
-}
-
-#logout-btn:hover {
-    background: rgba(255, 99, 99, 0.15);
-    border-color: rgba(255, 99, 99, 0.5);
+    /* I use !important sparingly here because hiding should win even if another rule tries to display the element. */
 }
 
 @keyframes slideDown {
+    /* I define keyframes once, then reference that animation name anywhere I want the same motion. */
     from {
         opacity: 0;
         max-height: 0;
@@ -406,7 +280,7 @@ p {
     }
 }
 
-/* Floating write button - blog page only */
+/* I position the write button fixed so it stays in the corner even while the page scrolls. */
 #write-btn {
     position: fixed;
     bottom: 2rem;
@@ -425,6 +299,7 @@ p {
     cursor: pointer;
     transition: all 0.3s ease;
     z-index: 999;
+    /* I raise the stacking order so the button stays above the post list instead of getting buried under it. */
 }
 
 #write-btn:hover {
@@ -437,7 +312,7 @@ p {
     transform: scale(0.95);
 }
 
-/* Footer */
+/* I style the footer separately so the page ending feels visually distinct from the main content. */
 #site-footer {
     max-width: 900px;
     margin: 3rem auto 0;
@@ -450,9 +325,9 @@ p {
     margin: 0.25rem 0;
 }
 
-/* Responsive Design */
+/* I use media queries when I want CSS to change based on screen size. */
 
-/* Mobile: 320px - 599px */
+/* I start with the small-screen override because phones need the tightest spacing and simplest stacking. */
 @media (max-width: 599px) {
     body {
         padding: 1rem;
@@ -476,6 +351,7 @@ p {
     }
 
     #main-navigation ul {
+        /* I switch the nav list from a horizontal row to a vertical column on small screens. */
         flex-direction: column;
         gap: 0.5rem;
     }
@@ -505,6 +381,7 @@ p {
     .entry-header {
         padding: 0.75rem;
         flex-direction: column;
+        /* I stack the date and title vertically on mobile so they do not fight for horizontal room. */
         align-items: flex-start;
     }
 
@@ -520,23 +397,6 @@ p {
         padding: 0.75rem;
     }
 
-    #entry-title,
-    #entry-content,
-    #add-entry-btn,
-    #password-btn,
-    #password-input {
-        font-size: 16px;
-    }
-
-    #password-form {
-        max-width: 100%;
-    }
-
-    .auth-gate,
-    #entry-section {
-        padding: 1.5rem;
-    }
-
     #write-btn {
         bottom: 1.5rem;
         right: 1.5rem;
@@ -550,7 +410,7 @@ p {
     }
 }
 
-/* Tablet: 600px - 899px */
+/* I use a middle breakpoint for tablets so spacing can relax a bit before desktop sizes kick in. */
 @media (min-width: 600px) and (max-width: 899px) {
     body {
         padding: 1.5rem;
@@ -583,7 +443,7 @@ p {
     }
 }
 
-/* Desktop: 900px and above */
+/* I keep the desktop rule small because the base styles already target larger screens pretty well. */
 @media (min-width: 900px) {
     body {
         padding: 2rem;

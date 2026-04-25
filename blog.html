@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- I use the same shared setup as the other pages, then add the extra script this page needs for markdown rendering. -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog - fernbit</title>
     <link rel="stylesheet" href="style.css">
+    <!-- I load the Marked library from a CDN so I can convert markdown text into HTML in the browser without writing my own parser. -->
+    <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- I use defer so the browser downloads the script now but waits to run it until the HTML has been parsed. -->
 </head>
 <body>
+    <!-- I keep the same nav here too so the blog still feels like part of the same site. -->
     <nav id="main-navigation">
         <ul>
             <li><a href="index.html">Home</a></li>
@@ -19,86 +24,207 @@
     <section id="blogging">
         <h2>Blog Log</h2>
 
-        <div id="blog-controls">
-            <div id="search-box">
-                <input type="text" id="search-date" placeholder="Search by date (DD-MM-YY)" />
-            </div>
-        </div>
-
+        <!-- I use a scroll container here so the blog list can stay compact even if I end up with a lot of posts. -->
         <div id="blog-scroll-container">
-            <div id="blog-container"></div>
+            <div id="blog-container">
+                <!-- I start with placeholder text so the page does not look broken while JavaScript is still fetching the posts. -->
+                <p class="blog-status">Loading posts...</p>
+            </div>
         </div>
     </section>
 
-    <a href="admin.html" id="write-btn" title="Write new entry" aria-label="Write new entry">✎</a>
+    <!-- I keep this floating link as a quick shortcut into Decap CMS. -->
+    <a href="/admin/" id="write-btn" title="Open CMS" aria-label="Open CMS">✎</a>
 
     <script>
+        // I grab the blog container once at the top so I can reuse it without repeatedly searching the page.
         const blogContainer = document.getElementById('blog-container');
-        const searchInput = document.getElementById('search-date');
 
-        let entries = [
-            { date: '25-04-26', title: 'Entry Title 2', content: 'Another placeholder entry. Click to expand.' },
-            { date: '24-04-26', title: 'New Webpage', content: 'hey, just decided to wipe the site and start fresh! I struggled a bit with my tech stuff today. I was trying to optimize for the touchscreen but ended up breaking in window clicking and just ended up resetting GNOME. Managed to reset it up tho so thats nice!' }
-        ];
+        // I keep the GitHub API URL in one constant so I only have one place to update if the repo path ever changes.
+        const contentApiUrl = 'https://api.github.com/repos/thismakesmesick/fernbit/contents/content?ref=main';
 
-        // Load entries from localStorage
-        const stored = localStorage.getItem('blogEntries');
-        if (stored) {
-            entries = JSON.parse(stored);
-        }
+        function parseFrontmatter(source) {
+            // I use a function when I want one reusable chunk of logic with a clear job.
+            // I pass in the raw text file as "source" and try to split it into frontmatter plus markdown body.
+            const match = source.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+            // I use this regular expression to look for:
+            // 1. an opening --- line
+            // 2. everything inside the frontmatter block
+            // 3. a closing --- line
+            // 4. everything after that as the post body
 
-        function formatDate() {
-            const now = new Date();
-            const day = String(now.getDate()).padStart(2, '0');
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const year = String(now.getFullYear()).slice(-2);
-            return `${day}-${month}-${year}`;
-        }
-
-        function renderEntries(filter = '') {
-            blogContainer.innerHTML = '';
-            let filtered = entries;
-
-            if (filter) {
-                filtered = entries.filter(e => e.date.includes(filter));
+            if (!match) {
+                // I return null when the file does not match the format I expect, because that is a simple way to mark it as unusable.
+                return null;
             }
 
-            filtered.forEach((entry, idx) => {
-                const entryDiv = document.createElement('div');
-                entryDiv.className = 'blog-entry';
-                entryDiv.innerHTML = `
-                    <button class="entry-header" aria-expanded="false">
-                        <span class="entry-date">${entry.date}</span>
-                        <span class="entry-title">${entry.title}</span>
-                    </button>
-                    <div class="entry-content-wrapper" hidden>
-                        <p class="entry-content">${entry.content}</p>
-                    </div>
-                `;
+            // I use an empty object so I can store key/value pairs like title and date from the frontmatter.
+            const metadata = {};
 
-                const header = entryDiv.querySelector('.entry-header');
-                const contentWrapper = entryDiv.querySelector('.entry-content-wrapper');
+            match[1].split('\n').forEach((line) => {
+                // I split the frontmatter into lines, then inspect each line one by one.
+                const separatorIndex = line.indexOf(':');
+
+                if (separatorIndex === -1) {
+                    // I skip lines that do not contain a colon because they are not valid "key: value" lines for this simple parser.
+                    return;
+                }
+
+                const key = line.slice(0, separatorIndex).trim();
+                const value = line.slice(separatorIndex + 1).trim();
+                // I trim both sides so accidental spaces do not become part of the metadata.
+                metadata[key] = value.replace(/^"(.*)"$/, '$1');
+                // I strip surrounding double quotes if they exist, because CMS frontmatter often wraps text values in quotes.
+            });
+
+            return {
+                // I use object spread here to copy every parsed metadata field into the returned object.
+                ...metadata,
+                // I add body separately because it lives after the frontmatter block, not inside it.
+                body: match[2].trim()
+            };
+        }
+
+        function formatDate(dateString) {
+            // I keep date formatting in its own function so I can change the display style later without touching the rest of the code.
+            const date = new Date(dateString);
+
+            if (Number.isNaN(date.getTime())) {
+                // I fall back to the original string if JavaScript cannot parse the date, because showing something is better than showing "Invalid Date".
+                return dateString;
+            }
+
+            return new Intl.DateTimeFormat('en-GB', {
+                // I use the built-in international date formatter instead of manually rearranging strings.
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).format(date);
+        }
+
+        function renderPosts(posts) {
+            // I send this function the final list of posts after loading and sorting are already done.
+            if (!posts.length) {
+                blogContainer.innerHTML = '<p class="blog-status">No posts yet.</p>';
+                // I replace the container content directly here because this is a tiny one-off status message.
+                return;
+            }
+
+            // I clear the loading message before I draw the real content.
+            blogContainer.innerHTML = '';
+
+            posts.forEach((post) => {
+                // I build each post in JavaScript so the page can stay static while still loading external markdown files.
+                const article = document.createElement('article');
+                article.className = 'blog-entry';
+
+                const header = document.createElement('button');
+                // I use a button instead of a plain div because this thing is interactive and should behave like a real control.
+                header.className = 'entry-header';
+                header.type = 'button';
+                header.setAttribute('aria-expanded', 'false');
+                // I track expanded state for accessibility so assistive tech can understand whether the post is open.
+
+                const date = document.createElement('span');
+                date.className = 'entry-date';
+                date.textContent = formatDate(post.date);
+
+                const title = document.createElement('span');
+                title.className = 'entry-title';
+                title.textContent = post.title || 'Untitled';
+
+                header.append(date, title);
+
+                const contentWrapper = document.createElement('div');
+                contentWrapper.className = 'entry-content-wrapper';
+                contentWrapper.hidden = true;
+                // I start each post body hidden so the list opens like an accordion.
+
+                const content = document.createElement('div');
+                content.className = 'entry-content';
+                content.innerHTML = marked.parse(post.body || '');
+                // I let Marked convert the markdown body into HTML so the text files can stay easy to write.
+
+                contentWrapper.appendChild(content);
+                // I append child elements in the order I want them to appear on the page.
+                article.append(header, contentWrapper);
+                blogContainer.appendChild(article);
+            });
+
+            // I wait until after creating the post buttons before I collect them, because they do not exist in the DOM before this point.
+            const entryHeaders = blogContainer.querySelectorAll('.entry-header');
+
+            entryHeaders.forEach((header) => {
+                const contentWrapper = header.nextElementSibling;
+                // I use nextElementSibling because each button is immediately followed by its matching content wrapper.
 
                 header.addEventListener('click', () => {
-                    const isOpen = contentWrapper.hidden;
-                    document.querySelectorAll('.entry-content-wrapper').forEach(w => w.hidden = true);
-                    document.querySelectorAll('.entry-header').forEach(h => h.setAttribute('aria-expanded', 'false'));
+                    // I attach a click listener so each post can open and close when someone clicks it.
+                    const isOpening = contentWrapper.hidden;
 
-                    if (isOpen) {
+                    blogContainer.querySelectorAll('.entry-content-wrapper').forEach((wrapper) => {
+                        // I close every post first so the UI behaves like a one-open-at-a-time accordion.
+                        wrapper.hidden = true;
+                    });
+
+                    entryHeaders.forEach((button) => {
+                        button.setAttribute('aria-expanded', 'false');
+                    });
+
+                    if (isOpening) {
                         contentWrapper.hidden = false;
                         header.setAttribute('aria-expanded', 'true');
                     }
                 });
-
-                blogContainer.appendChild(entryDiv);
             });
         }
 
-        searchInput.addEventListener('input', (e) => {
-            renderEntries(e.target.value);
-        });
+        async function loadPosts() {
+            // I make this function async because fetching files from GitHub happens over time, not instantly.
+            try {
+                const manifestResponse = await fetch(contentApiUrl);
+                // I use fetch to ask GitHub's API for the list of files inside /content.
+                if (!manifestResponse.ok) {
+                    // I manually throw an error when the HTTP response is bad so the catch block can handle the failure in one place.
+                    throw new Error('Could not load post list.');
+                }
 
-        renderEntries();
+                const files = await manifestResponse.json();
+                // I convert the API response from JSON text into a JavaScript array of file objects.
+                const markdownFiles = files.filter((file) => file.name.endsWith('.md') && file.download_url);
+                // I keep only markdown files that also have a direct download URL, because those are the actual blog posts I can read.
+                const posts = await Promise.all(
+                    markdownFiles.map(async (file) => {
+                        // I use Promise.all so the browser can load all post files in parallel instead of one by one.
+                        const response = await fetch(file.download_url);
+                        if (!response.ok) {
+                            throw new Error(`Could not load ${file.name}.`);
+                        }
+
+                        const source = await response.text();
+                        // I read each markdown file as plain text because I want to parse its frontmatter and markdown body myself.
+                        const post = parseFrontmatter(source);
+                        return post ? { ...post, filename: file.name } : null;
+                    })
+                );
+
+                const validPosts = posts
+                    .filter(Boolean)
+                    .sort((a, b) => new Date(b.date) - new Date(a.date));
+                // I remove null results first, then sort newest to oldest so the latest post appears first.
+
+                renderPosts(validPosts);
+            } catch (error) {
+                // I use catch as a single failure path for network problems, bad API responses, and parsing issues.
+                blogContainer.innerHTML = '<p class="blog-status">Could not load posts right now.</p>';
+                console.error(error);
+                // I log the real error to the console so I can debug it without exposing messy technical details in the page UI.
+            }
+        }
+
+        // I call the loading function once at the end so the whole blog boot process starts when the script runs.
+        loadPosts();
     </script>
+
 </body>
 </html>
