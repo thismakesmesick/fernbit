@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Converter - fernbit</title>
+<style>
+body {
+    background: #000;
+    color: #fff;
+    font-family: "Courier New", monospace;
+    padding: 2rem;
+}
+
+input, textarea, button {
+width: 100%;
+margin-top: 1rem;
+background: #111;
+color: #fff;
+border: 1px solid #333;
+padding: 0.75rem;
+font-family: inherit;
+}
+
+button {
+cursor: pointer;
+}
+
+label {
+margin-top: 1rem;
+display: block;
+opacity: 0.7;
+} </style>
+
+</head>
+<body>
+
+<h2>Markdown → Blog Converter</h2>
+
+<label>Title</label> <input id="title" placeholder="Post title">
+
+<label>Date</label> <input id="date" placeholder="DD/MM/YYYY, HH:MM">
+
+<label>Markdown Content</label>
+
+<textarea id="input" rows="10" placeholder="Paste your markdown here..."></textarea>
+
+<button onclick="convert()">Convert</button>
+
+<label>Generated HTML</label>
+
+<textarea id="output" rows="15" readonly></textarea>
+
+<script>
+function convert() {
+    const input = document.getElementById("input").value;
+    const title = document.getElementById("title").value || "Untitled";
+    const date = document.getElementById("date").value || "DD/MM/YYYY";
+
+    const lines = input.split("\n");
+
+    let html = "";
+    let inList = false;
+
+    lines.forEach(line => {
+        line = line.trim();
+
+        if (line.startsWith("## ")) {
+            html += `<h2>${line.replace("## ", "")}</h2>\n`;
+        } 
+        else if (line.startsWith("### ")) {
+            html += `<h3>${line.replace("### ", "")}</h3>\n`;
+        } 
+        else if (line.startsWith("- ")) {
+            if (!inList) {
+                html += "<ul>\n";
+                inList = true;
+            }
+            html += `<li>${line.replace("- ", "")}</li>\n`;
+        } 
+        else {
+            if (inList) {
+                html += "</ul>\n";
+                inList = false;
+            }
+
+            if (line === "") {
+                html += "<br>\n";
+            } else {
+                html += `<p>${line}</p>\n`;
+            }
+        }
+    });
+
+    if (inList) html += "</ul>";
+
+    const final = `
+<article class="blog-entry">
+    <button class="entry-header" aria-expanded="false" type="button">
+        <span class="entry-date">${date}</span>
+        <span class="entry-title">${title}</span>
+    </button>
+    <div class="entry-content-wrapper" hidden>
+        <div class="entry-content">
+${html}
+        </div>
+    </div>
+</article>
+`;
+
+    document.getElementById("output").value = final.trim();
+}
+</script>
+
+</body>
+</html>
