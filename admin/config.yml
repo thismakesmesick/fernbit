@@ -17,3 +17,13 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
       - { label: "Body", name: "body", widget: "markdown" }
+  - name: "moods"
+    label: "Mood Tracker"
+    folder: "moods"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{hour}}-{{minute}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string", required: true }
+      - { label: "Date", name: "date", widget: "datetime", required: true }
+      - { label: "Mood", name: "mood", widget: "number", required: true, min: 1, max: 5 }
+      - { label: "Note", name: "note", widget: "text", required: false }
