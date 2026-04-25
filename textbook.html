@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- I use this page as my living HTML glossary, so whenever I add a new HTML term to the site I should add it here too. -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Textbook - fernbit</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav id="main-navigation">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="textbook.html">Textbook</a></li>
+        </ul>
+    </nav>
+
+    <main id="main-content">
+        <section id="textbook-intro">
+            <h1>HTML Textbook</h1>
+            <p>This page is my running explanation of every HTML term I currently use in this site. I treat it like a reference page for myself, and I should update it whenever I add a new tag or attribute anywhere in the code.</p>
+        </section>
+
+        <section id="html-elements">
+            <h2>Elements I Use</h2>
+
+            <article>
+                <h2>&lt;!DOCTYPE html&gt;</h2>
+                <p>I use the doctype at the very top of the file to tell the browser to use modern HTML rules. Without it, browsers can fall into older compatibility behavior that makes layouts and styling weird.</p>
+            </article>
+
+            <article>
+                <h2>&lt;html&gt;</h2>
+                <p>I use the <code>&lt;html&gt;</code> element as the outer wrapper for the entire page. Everything on the page lives inside it.</p>
+            </article>
+
+            <article>
+                <h2>&lt;head&gt;</h2>
+                <p>I use <code>&lt;head&gt;</code> for metadata and setup information. This is where I put page settings, the title, stylesheet links, and external scripts that prepare the page.</p>
+            </article>
+
+            <article>
+                <h2>&lt;meta&gt;</h2>
+                <p>I use <code>&lt;meta&gt;</code> to give the browser extra information about the page, like character encoding and mobile viewport behavior. It does not display visible content by itself.</p>
+            </article>
+
+            <article>
+                <h2>&lt;title&gt;</h2>
+                <p>I use <code>&lt;title&gt;</code> to control the text shown in the browser tab and bookmarks. Each page gets its own title so I can tell tabs apart.</p>
+            </article>
+
+            <article>
+                <h2>&lt;link&gt;</h2>
+                <p>I use <code>&lt;link&gt;</code> to connect external resources to the page. In this site I mainly use it to load the shared stylesheet.</p>
+            </article>
+
+            <article>
+                <h2>&lt;body&gt;</h2>
+                <p>I use <code>&lt;body&gt;</code> for all visible content. If a visitor can actually see or interact with it, it belongs somewhere inside the body.</p>
+            </article>
+
+            <article>
+                <h2>&lt;header&gt;</h2>
+                <p>I use <code>&lt;header&gt;</code> for the top introductory area of a page or section. On my home page it holds the site title and short tagline.</p>
+            </article>
+
+            <article>
+                <h2>&lt;nav&gt;</h2>
+                <p>I use <code>&lt;nav&gt;</code> for the group of links that help people move around the site. This tells browsers and screen readers that the links are navigation, not random text links.</p>
+            </article>
+
+            <article>
+                <h2>&lt;ul&gt;</h2>
+                <p>I use <code>&lt;ul&gt;</code>, which means unordered list, when I have a list where order does not matter. My navigation menu is a good example because the items are choices, not steps.</p>
+            </article>
+
+            <article>
+                <h2>&lt;li&gt;</h2>
+                <p>I use <code>&lt;li&gt;</code> for each single item inside a list. It always lives inside a list container such as <code>&lt;ul&gt;</code>.</p>
+            </article>
+
+            <article>
+                <h2>&lt;a&gt;</h2>
+                <p>I use <code>&lt;a&gt;</code>, which means anchor, to create links. The link becomes clickable and sends the visitor to the location defined by its <code>href</code>.</p>
+            </article>
+
+            <article>
+                <h2>&lt;main&gt;</h2>
+                <p>I use <code>&lt;main&gt;</code> for the primary content of a page. There should only be one main landmark per page because it is supposed to represent the central content, not everything.</p>
+            </article>
+
+            <article>
+                <h2>&lt;section&gt;</h2>
+                <p>I use <code>&lt;section&gt;</code> to group related content into meaningful chunks. It helps me organize the page into topics instead of making one huge pile of elements.</p>
+            </article>
+
+            <article>
+                <h2>&lt;h1&gt;</h2>
+                <p>I use <code>&lt;h1&gt;</code> for the top-level heading of a page. It is the strongest heading and usually names what the page is mainly about.</p>
+            </article>
+
+            <article>
+                <h2>&lt;h2&gt;</h2>
+                <p>I use <code>&lt;h2&gt;</code> for the next heading level under the main page heading. I use it for major page sections and glossary entries.</p>
+            </article>
+
+            <article>
+                <h2>&lt;p&gt;</h2>
+                <p>I use <code>&lt;p&gt;</code> for ordinary paragraph text. It is the default choice when I just need a block of readable writing.</p>
+            </article>
+
+            <article>
+                <h2>&lt;footer&gt;</h2>
+                <p>I use <code>&lt;footer&gt;</code> for closing page information, such as copyright text or other end-of-page details.</p>
+            </article>
+
+            <article>
+                <h2>&lt;script&gt;</h2>
+                <p>I use <code>&lt;script&gt;</code> to load or write JavaScript. In this site I use it both to import outside libraries and to run my own page behavior.</p>
+            </article>
+
+            <article>
+                <h2>&lt;div&gt;</h2>
+                <p>I use <code>&lt;div&gt;</code> as a generic container when I need to group things together but there is not a more meaningful semantic tag for the job.</p>
+            </article>
+
+            <article>
+                <h2>&lt;article&gt;</h2>
+                <p>I use <code>&lt;article&gt;</code> for a self-contained piece of content. My blog entries fit that idea because each post can stand on its own.</p>
+            </article>
+
+            <article>
+                <h2>&lt;button&gt;</h2>
+                <p>I use <code>&lt;button&gt;</code> for interactive controls that do something on the page. In the blog, the post header is a button because clicking it opens and closes content.</p>
+            </article>
+
+            <article>
+                <h2>&lt;span&gt;</h2>
+                <p>I use <code>&lt;span&gt;</code> for small inline pieces of text that need styling or structure without becoming their own block. In the blog headers I use spans for the date and title.</p>
+            </article>
+        </section>
+
+        <section id="html-attributes">
+            <h2>Attributes I Use</h2>
+
+            <article>
+                <h2>lang</h2>
+                <p>I use the <code>lang</code> attribute on <code>&lt;html&gt;</code> to say what language the page is written in. This helps screen readers, browsers, and search engines understand the content better.</p>
+            </article>
+
+            <article>
+                <h2>charset</h2>
+                <p>I use <code>charset</code> on a meta tag to set the character encoding. I use UTF-8 so letters, punctuation, and symbols display correctly.</p>
+            </article>
+
+            <article>
+                <h2>name</h2>
+                <p>I use <code>name</code> on metadata when I need to identify what kind of meta information I am setting. The viewport meta tag uses it to say what the setting is for.</p>
+            </article>
+
+            <article>
+                <h2>content</h2>
+                <p>I use <code>content</code> to hold the actual value of a meta tag. For example, it contains the viewport settings that tell mobile browsers how to scale the page.</p>
+            </article>
+
+            <article>
+                <h2>rel</h2>
+                <p>I use <code>rel</code> on a link tag to describe the relationship between my page and the file I am linking to. In this site it says the linked file is a stylesheet.</p>
+            </article>
+
+            <article>
+                <h2>href</h2>
+                <p>I use <code>href</code> to tell a link where it should go. If I change the value, I change the destination.</p>
+            </article>
+
+            <article>
+                <h2>id</h2>
+                <p>I use <code>id</code> when one element needs a unique name. This is useful for CSS targeting, JavaScript lookups, and anchor links.</p>
+            </article>
+
+            <article>
+                <h2>class</h2>
+                <p>I use <code>class</code> when multiple elements need to share the same styling or behavior. Unlike an id, a class is meant to be reused.</p>
+            </article>
+
+            <article>
+                <h2>title</h2>
+                <p>I use the <code>title</code> attribute for extra descriptive text on an element. On the CMS shortcut link, it gives a small label explaining what the control does.</p>
+            </article>
+
+            <article>
+                <h2>aria-label</h2>
+                <p>I use <code>aria-label</code> to give accessible text to an element when the visible content alone might not explain it clearly enough. This helps screen reader users understand controls.</p>
+            </article>
+
+            <article>
+                <h2>src</h2>
+                <p>I use <code>src</code> on a script tag to point to the JavaScript file I want to load. It is the address the browser fetches.</p>
+            </article>
+
+            <article>
+                <h2>defer</h2>
+                <p>I use <code>defer</code> on an external script when I want the browser to download it during page load but wait to run it until the HTML structure is ready.</p>
+            </article>
+
+            <article>
+                <h2>type</h2>
+                <p>I use <code>type</code> on buttons to be explicit about what kind of button they are. I set it to <code>button</code> so it acts like a normal clickable control instead of a form submit button.</p>
+            </article>
+
+            <article>
+                <h2>aria-expanded</h2>
+                <p>I use <code>aria-expanded</code> on the blog accordion buttons to describe whether each post is currently open or closed. This makes the interaction more understandable for assistive technology.</p>
+            </article>
+
+            <article>
+                <h2>hidden</h2>
+                <p>I use the <code>hidden</code> attribute to mark content that should not be shown yet. In my blog, the post body starts hidden until the matching button is clicked.</p>
+            </article>
+        </section>
+    </main>
+</body>
+</html>
