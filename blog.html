@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Navigation Section: Menu for site pages -->
     <nav id="main-navigation">
         <ul>
             <li><a href="index.html">Home</a></li>
@@ -17,20 +16,89 @@
         </ul>
     </nav>
 
-    <!-- Diary Entries Section: List of diary posts -->
     <section id="blogging">
-        <h2>Blog List</h2>
-        <article class="blog-entry">
-            <h3>Entry Title 1</h3>
-            <p class="entry-date">Date: [Insert Date]</p>
-            <p class="entry-content">placeholder text, fill in later</p>
-        </article>
-        <article class="blog-entry">
-            <h3>Entry Title 2</h3>
-            <p class="entry-date">Date: [Insert Date]</p>
-            <p class="entry-content">Another placeholder entry.</p>
-        </article>
-        <!-- Add more blog-entry articles here -->
+        <h2>Blog Log</h2>
+
+        <div id="blog-controls">
+            <div id="search-box">
+                <input type="text" id="search-date" placeholder="Search by date (DD-MM-YY)" />
+            </div>
+        </div>
+
+        <div id="blog-scroll-container">
+            <div id="blog-container"></div>
+        </div>
     </section>
+
+    <a href="admin.html" id="write-btn" title="Write new entry" aria-label="Write new entry">✎</a>
+
+    <script>
+        const blogContainer = document.getElementById('blog-container');
+        const searchInput = document.getElementById('search-date');
+
+        let entries = [
+            { date: '25-04-26', title: 'Entry Title 2', content: 'Another placeholder entry. Click to expand.' },
+            { date: '24-04-26', title: 'New Webpage', content: 'hey, just decided to wipe the site and start fresh! I struggled a bit with my tech stuff today. I was trying to optimize for the touchscreen but ended up breaking in window clicking and just ended up resetting GNOME. Managed to reset it up tho so thats nice!' }
+        ];
+
+        // Load entries from localStorage
+        const stored = localStorage.getItem('blogEntries');
+        if (stored) {
+            entries = JSON.parse(stored);
+        }
+
+        function formatDate() {
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = String(now.getFullYear()).slice(-2);
+            return `${day}-${month}-${year}`;
+        }
+
+        function renderEntries(filter = '') {
+            blogContainer.innerHTML = '';
+            let filtered = entries;
+
+            if (filter) {
+                filtered = entries.filter(e => e.date.includes(filter));
+            }
+
+            filtered.forEach((entry, idx) => {
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'blog-entry';
+                entryDiv.innerHTML = `
+                    <button class="entry-header" aria-expanded="false">
+                        <span class="entry-date">${entry.date}</span>
+                        <span class="entry-title">${entry.title}</span>
+                    </button>
+                    <div class="entry-content-wrapper" hidden>
+                        <p class="entry-content">${entry.content}</p>
+                    </div>
+                `;
+
+                const header = entryDiv.querySelector('.entry-header');
+                const contentWrapper = entryDiv.querySelector('.entry-content-wrapper');
+
+                header.addEventListener('click', () => {
+                    const isOpen = contentWrapper.hidden;
+                    document.querySelectorAll('.entry-content-wrapper').forEach(w => w.hidden = true);
+                    document.querySelectorAll('.entry-header').forEach(h => h.setAttribute('aria-expanded', 'false'));
+
+                    if (isOpen) {
+                        contentWrapper.hidden = false;
+                        header.setAttribute('aria-expanded', 'true');
+                    }
+                });
+
+                blogContainer.appendChild(entryDiv);
+            });
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            renderEntries(e.target.value);
+        });
+
+        renderEntries();
+    </script>
 </body>
 </html>

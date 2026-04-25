@@ -94,27 +94,347 @@ p {
     color: #eaeaea;
 }
 
-/* Blog/Diary entries */
-.blog-entry {
-    padding: 1rem 1rem 1.2rem;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    margin-bottom: 1rem;
+/* Blog controls */
+#blog-controls {
+    margin-bottom: 1.5rem;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.blog-entry h3 {
-    margin: 0 0 0.5rem;
-    font-size: 1.25rem;
+#search-box {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#search-date {
+    flex: 1;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease;
+}
+
+#search-date:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+#search-date::placeholder {
+    color: #666;
+}
+
+/* Scrollable container - shows 3 entries */
+#blog-scroll-container {
+    max-width: 900px;
+    margin: 0 auto 2rem;
+    max-height: 55vh;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding-right: 0.5rem;
+}
+
+#blog-scroll-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+#blog-scroll-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+#blog-scroll-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+#blog-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+#blog-container {
+    margin: 0;
+    padding: 0;
+}
+
+/* Blog entry styles */
+.blog-entry {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.blog-entry:last-child {
+    border-bottom: none;
+}
+
+.entry-header {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
+    text-align: left;
+}
+
+.entry-header:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.entry-header[aria-expanded="true"] {
+    background-color: rgba(255, 255, 255, 0.08);
 }
 
 .entry-date {
-    margin: 0 0 0.75rem;
     color: #999;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
+    min-width: max-content;
+    flex-shrink: 0;
+}
+
+.entry-title {
+    flex: 1;
+    text-align: left;
+    color: #eaeaea;
+}
+
+.entry-content-wrapper {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    animation: slideDown 0.3s ease;
+}
+
+.entry-content-wrapper[hidden] {
+    display: none;
 }
 
 .entry-content {
     margin: 0;
+    color: #d0d0d0;
+    line-height: 1.8;
+}
+
+/* New entry form */
+#new-entry-form {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+#entry-title,
+#entry-content {
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease;
+}
+
+#entry-title:focus,
+#entry-content:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+#entry-title::placeholder,
+#entry-content::placeholder {
+    color: #666;
+}
+
+#entry-content {
+    resize: vertical;
+    min-height: 100px;
+}
+
+#add-entry-btn {
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#add-entry-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+#add-entry-btn:active {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Utility classes */
+.hidden {
+    display: none !important;
+}
+
+.error-msg {
+    color: #ff9999;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    min-height: 1.2rem;
+}
+
+/* Admin section - Password gate */
+#admin-section {
+    max-width: 900px;
+    margin: 0 auto 2rem;
+}
+
+.auth-gate {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 0;
+}
+
+#password-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 400px;
+}
+
+#password-form label {
+    color: #eaeaea;
+    font-size: 0.95rem;
+}
+
+#password-input {
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease;
+}
+
+#password-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+#password-input::placeholder {
+    color: #666;
+}
+
+#password-btn {
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#password-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+#entry-section.hidden {
+    display: none;
+}
+
+#entry-section {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+}
+
+#new-entry-form {
+    max-width: 900px;
+    margin: 0;
+}
+
+#auto-date {
+    color: #999;
+    font-size: 0.85rem;
+    margin: 0.5rem 0 1rem;
+}
+
+#logout-btn {
+    padding: 0.75rem;
+    background: rgba(255, 99, 99, 0.1);
+    border: 1px solid rgba(255, 99, 99, 0.3);
+    color: #ff9999;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 0.5rem;
+}
+
+#logout-btn:hover {
+    background: rgba(255, 99, 99, 0.15);
+    border-color: rgba(255, 99, 99, 0.5);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+    }
+    to {
+        opacity: 1;
+        max-height: 500px;
+    }
+}
+
+/* Floating write button - blog page only */
+#write-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 999;
+}
+
+#write-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+#write-btn:active {
+    transform: scale(0.95);
 }
 
 /* Footer */
@@ -178,12 +498,51 @@ p {
         padding-bottom: 1rem;
     }
 
-    .blog-entry {
+    #blog-scroll-container {
+        max-height: 50vh;
+    }
+
+    .entry-header {
+        padding: 0.75rem;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .entry-date {
+        min-width: auto;
+    }
+
+    .entry-title {
+        font-size: 0.95rem;
+    }
+
+    .entry-content-wrapper {
         padding: 0.75rem;
     }
 
-    .blog-entry h3 {
-        font-size: 1rem;
+    #entry-title,
+    #entry-content,
+    #add-entry-btn,
+    #password-btn,
+    #password-input {
+        font-size: 16px;
+    }
+
+    #password-form {
+        max-width: 100%;
+    }
+
+    .auth-gate,
+    #entry-section {
+        padding: 1.5rem;
+    }
+
+    #write-btn {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
     }
 
     p {
@@ -210,8 +569,17 @@ p {
         font-size: 1.5rem;
     }
 
-    .blog-entry {
+    #blog-scroll-container {
+        max-height: 52vh;
+    }
+
+    .entry-header {
         padding: 0.9rem;
+    }
+
+    #write-btn {
+        bottom: 1.75rem;
+        right: 1.75rem;
     }
 }
 

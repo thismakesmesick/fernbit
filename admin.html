@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write - fernbit</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav id="main-navigation">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="admin-section">
+        <h2>Write Entry</h2>
+
+        <div id="password-gate" class="auth-gate">
+            <div id="password-form">
+                <label for="password-input">Password:</label>
+                <input type="password" id="password-input" placeholder="Enter password..." />
+                <button id="password-btn">Unlock</button>
+                <p id="password-error" class="error-msg"></p>
+            </div>
+        </div>
+
+        <div id="entry-section" class="hidden">
+            <div id="new-entry-form">
+                <input type="text" id="entry-title" placeholder="Entry title..." />
+                <textarea id="entry-content" placeholder="Write your entry..."></textarea>
+                <p id="auto-date">Today: <span id="date-display"></span></p>
+                <button id="add-entry-btn">Publish Entry</button>
+                <button id="logout-btn">Logout</button>
+            </div>
+
+            <div id="html-output" class="hidden">
+                <h3>Copy this HTML to blog.html:</h3>
+                <button id="copy-btn">Copy to Clipboard</button>
+                <pre id="html-code"></pre>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const PASSWORD = 'bitwarden';
+        const passwordGate = document.getElementById('password-gate');
+        const entrySection = document.getElementById('entry-section');
+        const passwordInput = document.getElementById('password-input');
+        const passwordBtn = document.getElementById('password-btn');
+        const passwordError = document.getElementById('password-error');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        const titleInput = document.getElementById('entry-title');
+        const contentInput = document.getElementById('entry-content');
+        const addBtn = document.getElementById('add-entry-btn');
+        const dateDisplay = document.getElementById('date-display');
+        const htmlOutput = document.getElementById('html-output');
+        const htmlCode = document.getElementById('html-code');
+        const copyBtn = document.getElementById('copy-btn');
+
+        let isAuthenticated = false;
+        let entries = [
+            { date: '25-04-26', title: 'Entry Title 2', content: 'Another placeholder entry. Click to expand.' },
+            { date: '24-04-26', title: 'New Webpage', content: 'hey, just decided to wipe the site and start fresh! I struggled a bit with my tech stuff today. I was trying to optimize for the touchscreen but ended up breaking in window clicking and just ended up resetting GNOME. Managed to reset it up tho so thats nice!' }
+        ];
+
+        function formatDate() {
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = String(now.getFullYear()).slice(-2);
+            return `${day}-${month}-${year}`;
+        }
+
+        function displayDate() {
+            dateDisplay.textContent = formatDate();
+        }
+
+        function authenticate() {
+            if (passwordInput.value === PASSWORD) {
+                isAuthenticated = true;
+                passwordGate.classList.add('hidden');
+                entrySection.classList.remove('hidden');
+                displayDate();
+                passwordError.textContent = '';
+            } else {
+                passwordError.textContent = 'Incorrect password.';
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        }
+
+        function logout() {
+            isAuthenticated = false;
+            passwordGate.classList.remove('hidden');
+            entrySection.classList.add('hidden');
+            passwordInput.value = '';
+            titleInput.value = '';
+            contentInput.value = '';
+        }
+
+        passwordBtn.addEventListener('click', authenticate);
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                authenticate();
+            }
+        });
+
+        logoutBtn.addEventListener('click', logout);
+
+        addBtn.addEventListener('click', () => {
+            if (titleInput.value.trim() && contentInput.value.trim()) {
+                const date = formatDate();
+                const title = titleInput.value;
+                const content = contentInput.value;
+
+                // Generate HTML code
+                const htmlString = `            <div class="blog-entry">
+                <button class="entry-header" aria-expanded="false">
+                    <span class="entry-date">${date}</span>
+                    <span class="entry-title">${title}</span>
+                </button>
+                <div class="entry-content-wrapper" hidden>
+                    <p class="entry-content">${content}</p>
+                </div>
+            </div>`;
+
+                // Display HTML code
+                htmlCode.textContent = htmlString;
+                htmlOutput.classList.remove('hidden');
+                
+                // Clear form
+                titleInput.value = '';
+                contentInput.value = '';
+            }
+        });
+
+        // Load entries from localStorage if available
+        const stored = localStorage.getItem('blogEntries');
+        if (stored) {
+            entries = JSON.parse(stored);
+        }
+
+        displayDate();
+    </script>
+</body>
+</html>
