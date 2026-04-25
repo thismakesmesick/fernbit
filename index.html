@@ -1,23 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>thingamajig</title>
-  <link rel="stylesheet" href="style.css" />
-  </head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fernbit</title>
+    <!-- Link to CSS file (to be created later) -->
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
-    <div class="machine-scene">
-    <img id="machine-image" src="machine2.png" alt="Machine" />
+    <!-- Header Section: Site title and tagline -->
+    <header id="fernbit">
+        <h1>basic website for practicing, just freehand no planning bullshittt</h1>
+        <p>screen vomit</p>
+    </header>
 
-    <a class="paper-link-accessible" href="/blog/" aria-label="Go to blog">
-      Open blog
-    </a>
+    <!-- Navigation Section: Menu for site pages -->
+    <nav id="main-navigation">
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#blogging">Diary Entries</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
 
-      <span class="paper-tooltip" id="paper-tooltip" aria-hidden="true">Blog!</span>
-    <span class="screen-text" aria-hidden="true">hello :)</span>
-  </div>
+    <!-- Main Content Section: Primary content area -->
+    <main id="main-content">
+        <!-- Home Section: Welcome message -->
+        <section id="home">
+            <h2>Here it is</h2>
+            <p>here. it is my stuff. hopefully i remember how to change this later and where I put it yk</p>
+        </section>
 
-  <script src="script.js"></script>
+        <!-- About Section: Brief bio or description -->
+        <section id="about">
+            <h2>About Me</h2>
+            <p>Idk man I have memory issues and having a site guide with maybe messaging amongst ourselves might help but also I just like the idea of having my own page</p>
+        </section>
+
+        <!-- Diary Entries Section: List of diary posts -->
+        <section id="blogging">
+            <h2>Blog List</h2>
+            <article class="blog-entry">
+                <h3>Entry Title 1</h3>
+                <p class="entry-date">Date: [Insert Date]</p>
+                <p class="entry-content">placeholder text, fill in later</p>
+            </article>
+            <article class="blog-entry">
+                <h3>Entry Title 2</h3>
+                <p class="entry-date">Date: [Insert Date]</p>
+                <p class="entry-content">Another placeholder entry.</p>
+            </article>
+            <!-- Add more blog-entry articles here -->
+        </section>
+
+        <!-- Contact Section: How to reach you -->
+        <section id="contact">
+            <h2>Contact</h2>
+            <p>Email me: sophia@fernbit.net</p>
+        </section>
+    </main>
+
+    <!-- Footer Section: Copyright and additional info -->
+    <footer id="site-footer">
+        <p>&copy; 2026 Penny. All rights reserved.</p>
+
+    </footer>
 </body>
 </html>

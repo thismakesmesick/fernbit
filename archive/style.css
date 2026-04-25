@@ -1,0 +1,111 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body,
+body *,
+body *::before,
+body *::after {
+  cursor: url("cursor.png") 16 16, auto !important;
+}
+
+.machine-scene {
+  position: relative;
+  display: inline-block;
+}
+
+.machine-scene img {
+  display: block;
+  max-width: 100vw;
+  max-height: 100vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.screen-text {
+  position: absolute;
+  top: 40%;
+  left: 52%;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #f01aa5;
+  text-shadow: 0 0 8px rgba(240, 26, 62, 0.55);
+  font-family: "Courier New", Courier, monospace;
+  font-size: clamp(18px, 2.7vw, 42px);
+  letter-spacing: 0.12em;
+  transform: translate(-50%, -50%) skewX(-11deg) rotate(-1.5deg);
+}
+
+body:hover .screen-text {
+  animation: type-hello 1.2s steps(6, end) forwards;
+}
+
+@keyframes type-hello {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 6ch;
+  }
+}
+
+.paper-link-accessible {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.paper-link-accessible:focus-visible {
+  left: 50%;
+  top: 50%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  padding: 4px 6px;
+  background: #f9f2d0;
+  border: 1px solid #111;
+  color: #111;
+  font-family: "Courier New", "Lucida Console", monospace;
+
+  text-decoration: none;
+}
+
+.paper-tooltip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, calc(-100% - 8px));
+  padding: 3px 6px;
+  border: 1px solid #111;
+  background: #f9f2d0;
+  color: #111;
+  font-family: "Courier New", "Lucida Console", monospace;
+  font-size: 11px;
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: 1px 1px 0 #000;
+  opacity: 0;
+  pointer-events: none;
+ transition: opacity 0.08s ease;
+  z-index: 10;
+}
+.paper-tooltip.is-visible {
+  opacity: 1;
+}
