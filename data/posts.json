@@ -1,5 +1,12 @@
 [
   {
+  "date": "29.04.2026 10.40",
+  "title": "JSON",
+  "content": [
+    "<p>I am so proud of stupid shit. I updated my site to use a .json file so it stays static but posting blogs is easier without having an infinite length html file! And I updated my convertor which I am testing with this post. Although maybe I should make a seperate page for website updates and migrate this stuff...</p>"
+  ]
+},
+  {
     "date": "28/04/2026 12.40",
     "title": "Chocolate",
     "content": [
