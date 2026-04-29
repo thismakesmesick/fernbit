@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Converter - fernbit</title>
+
 <style>
 body {
     background: #000;
@@ -14,42 +14,43 @@ body {
 }
 
 input, textarea, button {
-width: 100%;
-margin-top: 1rem;
-background: #111;
-color: #fff;
-border: 1px solid #333;
-padding: 0.75rem;
-font-family: inherit;
+    width: 100%;
+    margin-top: 1rem;
+    background: #111;
+    color: #fff;
+    border: 1px solid #333;
+    padding: 0.75rem;
+    font-family: inherit;
 }
 
 button {
-cursor: pointer;
+    cursor: pointer;
 }
 
 label {
-margin-top: 1rem;
-display: block;
-opacity: 0.7;
-} </style>
-
+    margin-top: 1rem;
+    display: block;
+    opacity: 0.7;
+}
+</style>
 </head>
+
 <body>
 
-<h2>Markdown → Blog Converter</h2>
+<h2>Markdown → JSON Converter</h2>
 
-<label>Title</label> <input id="title" placeholder="Post title">
+<label>Title</label>
+<input id="title" placeholder="Post title">
 
-<label>Date</label> <input id="date" placeholder="DD/MM/YYYY, HH:MM">
+<label>Date</label>
+<input id="date" placeholder="DD/MM/YYYY, HH:MM">
 
 <label>Markdown Content</label>
-
 <textarea id="input" rows="10" placeholder="Paste your markdown here..."></textarea>
 
 <button onclick="convert()">Convert</button>
 
-<label>Generated HTML</label>
-
+<label>Generated JSON (paste into posts.json)</label>
 <textarea id="output" rows="15" readonly></textarea>
 
 <script>
@@ -60,56 +61,55 @@ function convert() {
 
     const lines = input.split("\n");
 
-    let html = "";
+    let blocks = [];
+    let currentBlock = "";
     let inList = false;
 
     lines.forEach(line => {
         line = line.trim();
 
         if (line.startsWith("## ")) {
-            html += `<h2>${line.replace("## ", "")}</h2>\n`;
+            currentBlock += `<h2>${line.replace("## ", "")}</h2>`;
         } 
         else if (line.startsWith("### ")) {
-            html += `<h3>${line.replace("### ", "")}</h3>\n`;
+            currentBlock += `<h3>${line.replace("### ", "")}</h3>`;
         } 
         else if (line.startsWith("- ")) {
             if (!inList) {
-                html += "<ul>\n";
+                currentBlock += "<ul>";
                 inList = true;
             }
-            html += `<li>${line.replace("- ", "")}</li>\n`;
+            currentBlock += `<li>${line.replace("- ", "")}</li>`;
         } 
         else {
             if (inList) {
-                html += "</ul>\n";
+                currentBlock += "</ul>";
                 inList = false;
             }
 
             if (line === "") {
-                html += "<br>\n";
+                if (currentBlock !== "") {
+                    blocks.push(currentBlock);
+                    currentBlock = "";
+                }
             } else {
-                html += `<p>${line}</p>\n`;
+                currentBlock += `<p>${line}</p>`;
             }
         }
     });
 
-    if (inList) html += "</ul>";
+    if (inList) currentBlock += "</ul>";
+    if (currentBlock !== "") blocks.push(currentBlock);
 
-    const final = `
-<article class="blog-entry">
-    <button class="entry-header" aria-expanded="false" type="button">
-        <span class="entry-date">${date}</span>
-        <span class="entry-title">${title}</span>
-    </button>
-    <div class="entry-content-wrapper" hidden>
-        <div class="entry-content">
-${html}
-        </div>
-    </div>
-</article>
-`;
+    const jsonOutput = {
+        date: date,
+        title: title,
+        content: blocks
+    };
 
-    document.getElementById("output").value = final.trim();
+    // Format nicely for copy-paste
+    document.getElementById("output").value =
+        JSON.stringify(jsonOutput, null, 2) + ",";
 }
 </script>
 
