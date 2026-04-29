@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- I use the same shared setup as the other pages, and this page now stays fully hand-edited instead of loading posts from a backend. -->
+    <!-- Same shared setup -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog - fernbit</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- I keep the same nav here too so the blog still feels like part of the same site. -->
+
+    <!-- Navigation stays unchanged -->
     <nav id="main-navigation">
         <ul>
             <li><a href="index.html">Home</a></li>
@@ -22,125 +23,70 @@
     <section id="blogging">
         <h2>Blog Log</h2>
 
-        <!-- I use a scroll container here so the blog list can stay compact even if I end up with a lot of posts. -->
+        <!-- Scroll container stays the same -->
         <div id="blog-scroll-container">
             <div id="blog-container">
-                <!-- NEW POSTS UNDER ME -->
-                <!--
-                <article class="blog-entry">
-                    <button class="entry-header" aria-expanded="false" type="button">
-                        <span class="entry-date">26/04/2026, 21:30</span>
-                        <span class="entry-title">New Post Title</span>
-                    </button>
-                    <div class="entry-content-wrapper" hidden>
-                        <div class="entry-content">
-                            <p>First paragraph goes here.</p>
-                            <p>Second paragraph goes here.</p>
-                        </div>
-                    </div>
-                </article>
-                -->
-                <article class="blog-entry">
-    <button class="entry-header" aria-expanded="false" type="button">
-        <span class="entry-date">28/04/2026 12.40</span>
-        <span class="entry-title">Chocolate</span>
-    </button>
-    <div class="entry-content-wrapper" hidden>
-        <div class="entry-content">
-<p>Life is weird you know. I'm weirdly terrified about going to the Frauenarzt today. Tbh, I know why. Especially because it's a man. I am scared and I will feel exposed and I might just have to accept it. I dont know if this is a feeling that will pass and that I will get over. I think I just have to accept it. I'm hoping treating myself like a kid will help too. I am nice to myself and I reward myself for doing hard things. Its fucking stupid. Writing this is stupid. But at least putting it out somewhere means irs out of me. And putting it publicly means there's no point in being ashamed. Right?</p>
-
-        </div>
-    </div>
-                </article>
-                <article class="blog-entry">
-    <button class="entry-header" aria-expanded="false" type="button">
-        <span class="entry-date">26/04/2026 00:43</span>
-        <span class="entry-title">I overshot here</span>
-    </button>
-    <div class="entry-content-wrapper" hidden>
-        <div class="entry-content">
-<p>This is the problem. I am obsessive now. I won't be able to sleeb because the code invades my dreams. I made a convertor so that when I am editing the site I have a nicer easier input and I am less likely to mess up my code! It is a bit awkward and not perfect to use and tbh sometimes I wonder why I even am doing this. I always start this projects and then get absolutely mental about them it is weird and a problem. But maybe it's just nighttime and I hate myself at night as always.... Idk. i dont like myslef in general.</p>
-
-        </div>
-    </div>
-</article>
-                  <article class="blog-entry">
-                    <button class="entry-header" aria-expanded="false" type="button">
-                        <span class="entry-date">26/04/2026, 00:11</span>
-                        <span class="entry-title">CODING IS EXPPENSIVE</span>
-                    </button>
-                    <div class="entry-content-wrapper" hidden>
-                        <div class="entry-content">
-                            <p>So sadly I am back to using the good old fashion way of making a template and editing that because coding is infact a very expensive hobby. when you use those backend tols they are hugely limited on a free plan and even looking at your own site costs you credits. insane.</p>
-                            <p>it isss what it issss</p>
-                        </div>
-                    </div>
-                </article>
-                <article class="blog-entry">
-                    <button class="entry-header" aria-expanded="false" type="button">
-                        <span class="entry-date">25/04/2026, 23:00</span>
-                        <span class="entry-title">fixed again</span>
-                    </button>
-                    <div class="entry-content-wrapper" hidden>
-                        <div class="entry-content">
-                            <p>broke it and then fixed it again. glad its back up and running. i am baked af and this is nuts. its like 11pm. also i gotta see what other shit i can use it for.</p>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="blog-entry">
-                    <button class="entry-header" aria-expanded="false" type="button">
-                        <span class="entry-date">25/04/2026, 00:00</span>
-                        <span class="entry-title">WOOOOO! I setup my backend.</span>
-                    </button>
-                    <div class="entry-content-wrapper" hidden>
-                        <div class="entry-content">
-                            <p>I am editing this on my backend wtf. It took me so long. I am setting it up so I can write in markdown and then it converts, I am not sure it worked considering I am using a webtool for it but just the fact that I made the backend and the login works honestly means just so much to me.</p>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="blog-entry">
-                    <button class="entry-header" aria-expanded="false" type="button">
-                        <span class="entry-date">24/04/2026, 00:00</span>
-                        <span class="entry-title">New Webpage</span>
-                    </button>
-                    <div class="entry-content-wrapper" hidden>
-                        <div class="entry-content">
-                            <p>hey, just decided to wipe the site and start fresh!</p>
-                            <p>I struggled a bit with my tech stuff today. I was trying to optimize for the touchscreen but ended up breaking in window clicking and just ended up resetting GNOME.</p>
-                            <p>Managed to reset it up tho so thats nice!</p>
-                        </div>
-                    </div>
-                </article>
+                <!-- Posts will be injected here -->
             </div>
         </div>
     </section>
 
     <script>
-        // I keep the accordion behavior in JavaScript, but the actual post content now lives directly in this HTML file.
-        const entryHeaders = document.querySelectorAll('.entry-header');
+        fetch('/data/posts.json')
+            .then(res => res.json())
+            .then(posts => {
+                const container = document.getElementById('blog-container');
 
-        entryHeaders.forEach((header) => {
-            const contentWrapper = header.nextElementSibling;
+                posts.forEach(post => {
+                    const article = document.createElement('article');
+                    article.className = 'blog-entry';
 
-            header.addEventListener('click', () => {
-                const isOpening = contentWrapper.hidden;
+                    const contentHTML = post.content
+                        .map(p => `<p>${p}</p>`)
+                        .join('');
 
-                document.querySelectorAll('.entry-content-wrapper').forEach((wrapper) => {
-                    wrapper.hidden = true;
+                    article.innerHTML = `
+                        <button class="entry-header" aria-expanded="false" type="button">
+                            <span class="entry-date">${post.date}</span>
+                            <span class="entry-title">${post.title}</span>
+                        </button>
+                        <div class="entry-content-wrapper" hidden>
+                            <div class="entry-content">
+                                ${contentHTML}
+                            </div>
+                        </div>
+                    `;
+
+                    container.appendChild(article);
                 });
 
-                entryHeaders.forEach((button) => {
-                    button.setAttribute('aria-expanded', 'false');
-                });
+                // Accordion logic (unchanged behavior)
+                const entryHeaders = document.querySelectorAll('.entry-header');
 
-                if (isOpening) {
-                    contentWrapper.hidden = false;
-                    header.setAttribute('aria-expanded', 'true');
-                }
+                entryHeaders.forEach((header) => {
+                    const contentWrapper = header.nextElementSibling;
+
+                    header.addEventListener('click', () => {
+                        const isOpening = contentWrapper.hidden;
+
+                        document.querySelectorAll('.entry-content-wrapper').forEach((wrapper) => {
+                            wrapper.hidden = true;
+                        });
+
+                        entryHeaders.forEach((button) => {
+                            button.setAttribute('aria-expanded', 'false');
+                        });
+
+                        if (isOpening) {
+                            contentWrapper.hidden = false;
+                            header.setAttribute('aria-expanded', 'true');
+                        }
+                    });
+                });
+            })
+            .catch(err => {
+                console.error("Failed to load posts:", err);
             });
-        });
     </script>
 
 </body>
