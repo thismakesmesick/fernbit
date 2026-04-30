@@ -42,9 +42,15 @@
     <main id="main-content">
         <!-- I use <section> to group related content into one meaningful chunk. -->
         <section id="home">
-            <h2>Here it is</h2>
+            <h2>status</h2>
             <!-- I use <h2> for the next heading level under the main page title. -->
-            <p>last update: 30-04-2026 / sober and coding from my phone at work. thinking about making this a true blog </p>
+
+            <!-- status text will be injected here -->
+            <p id="status-text">loading...</p>
+
+            <!-- commit date will be injected here -->
+            <p id="last-commit">loading commit...</p>
+
         </section>
     </main>
 
@@ -52,5 +58,37 @@
     <footer id="site-footer">
         <p>&copy; 2026 Penny (Cole isn't even helping properly). All rights reserved.</p>
     </footer>
+
+<script>
+// I fetch the latest status from a JSON file so I do not have to edit HTML every time.
+fetch('status.json')
+    .then(res => res.json())
+    .then(data => {
+        const latest = data[0]; // newest first
+
+        document.getElementById('status-text').textContent = latest.text;
+
+        // format ISO date nicely
+        const date = new Date(latest.isoDate);
+        document.getElementById('status-text').textContent +=
+            " (" + date.toLocaleString('en-GB') + ")";
+    });
+
+// I fetch the latest commit from GitHub so the site reflects my actual activity.
+fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/commits')
+    .then(res => res.json())
+    .then(data => {
+        const commit = data[0];
+        const date = new Date(commit.commit.author.date);
+
+        document.getElementById('last-commit').textContent =
+            "last commit: " + date.toLocaleString('en-GB');
+    })
+    .catch(() => {
+        document.getElementById('last-commit').textContent =
+            "last commit: unavailable";
+    });
+</script>
+
 </body>
 </html>
