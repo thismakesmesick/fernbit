@@ -75,7 +75,7 @@ fetch('status.json')
     });
 
 // I fetch the latest commit from GitHub so the site reflects my actual activity.
-fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/commits')
+fetch('https://api.github.com/repos/thismakesmesick/fernbit/commits')
     .then(res => res.json())
     .then(data => {
         const commit = data[0];
