@@ -48,8 +48,8 @@
             <!-- status text will be injected here -->
             <p id="status-text">loading...</p>
 
-            <!-- commit date will be injected here -->
-            <p id="last-commit">loading commit...</p>
+            <!-- change commit date here -->
+            <p id="last-commit"> 30/04/2026 </p>
 
         </section>
     </main>
@@ -74,20 +74,6 @@ fetch('status.json')
             " (" + date.toLocaleString('en-GB') + ")";
     });
 
-// I fetch the latest commit from GitHub so the site reflects my actual activity.
-fetch('https://api.github.com/repos/thismakesmesick/fernbit/commits')
-    .then(res => res.json())
-    .then(data => {
-        const commit = data[0];
-        const date = new Date(commit.commit.author.date);
-
-        document.getElementById('last-commit').textContent =
-            "last commit: " + date.toLocaleString('en-GB');
-    })
-    .catch(() => {
-        document.getElementById('last-commit').textContent =
-            "last commit: unavailable";
-    });
 </script>
 
 </body>
