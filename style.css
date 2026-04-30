@@ -239,6 +239,10 @@ p {
 
 .post-card:hover {
     transform: translate(-3px, -3px);
+    
+}
+#blog {
+    border-bottom: none;
 }
 
 /* =========================
