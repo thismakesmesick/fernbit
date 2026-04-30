@@ -39,23 +39,24 @@ label {
 
 <h2>Markdown → JSON Converter</h2>
 
-<label>Title</label>
+<label>Title (only for diary)</label>
 <input id="title" placeholder="Post title">
 
 <label>Date</label>
 <input id="date" placeholder="DD/MM/YYYY, HH:MM">
 
-<label>Markdown Content</label>
-<textarea id="input" rows="10" placeholder="Paste your markdown here..."></textarea>
+<label>Markdown / Status Text</label>
+<textarea id="input" rows="10" placeholder="Write your entry or status here..."></textarea>
 
-<button onclick="convert()">Convert</button>
+<button onclick="convertDiary()">Convert Diary</button>
+<button onclick="convertStatus()">Convert Status</button>
 
-<label>Generated JSON (paste into posts.json)</label>
+<label>Generated JSON</label>
 <textarea id="output" rows="15" readonly></textarea>
 
 <script>
 
-// ✅ STEP 1 — global helper (NOT inside convert)
+// helper
 function getDateFormats() {
     const now = new Date();
 
@@ -73,8 +74,8 @@ function getDateFormats() {
 }
 
 
-// main function
-function convert() {
+// DIARY CONVERTER
+function convertDiary() {
     const input = document.getElementById("input").value;
     const title = document.getElementById("title").value || "Untitled";
     const dateInput = document.getElementById("date");
@@ -132,7 +133,6 @@ function convert() {
     if (inList) currentBlock += "</ul>";
     if (currentBlock !== "") blocks.push(currentBlock);
 
-    // ✅ updated JSON structure
     const jsonOutput = {
         displayDate: displayDate,
         isoDate: isoDate,
@@ -145,7 +145,30 @@ function convert() {
 }
 
 
-// ✅ auto-fill date on load
+// STATUS CONVERTER
+function convertStatus() {
+    const input = document.getElementById("input").value.trim();
+    const dateInput = document.getElementById("date");
+
+    let isoDate;
+
+    if (dateInput.value) {
+        isoDate = new Date(dateInput.value).toISOString();
+    } else {
+        isoDate = new Date().toISOString();
+    }
+
+    const jsonOutput = {
+        text: input,
+        isoDate: isoDate
+    };
+
+    document.getElementById("output").value =
+        JSON.stringify(jsonOutput, null, 2) + ",";
+}
+
+
+// autofill date
 window.onload = () => {
     const { displayDate } = getDateFormats();
     document.getElementById("date").value = displayDate;
