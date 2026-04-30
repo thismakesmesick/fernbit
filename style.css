@@ -1,10 +1,8 @@
 /* I start in :root because it is the top-level CSS scope for the whole document and a good place for site-wide defaults. */
 :root {
-    /* I tell the browser this site is designed as a dark interface so built-in UI choices can match better. */
     color-scheme: dark;
     background-color: #000000;
     color: #ffffff;
-    /* I set the default font once here so every element inherits it unless I intentionally override it later. */
     font-family: "Courier New", Courier, monospace;
     line-height: 1.6;
 }
@@ -12,13 +10,11 @@
 /* I target html and body together because both affect the outer page box. */
 html, body {
     margin: 0;
-    /* I remove the browser's default page margin so my layout starts from a clean edge. */
     min-height: 100%;
     background-color: #000000;
 }
 
 body {
-    /* I use padding on body to create breathing room around the content without wrapping everything in another container. */
     padding: 2rem;
     letter-spacing: 0.01em;
 }
@@ -49,10 +45,14 @@ select {
     font-family: "Courier New", Courier, monospace;
 }
 
+/* I set a global link color so all links stay consistent across the site. */
+a {
+    color: #C90A5D;
+}
+
 /* I target an id with # because this selector is meant for one unique element. */
 #fernbit {
     max-width: 900px;
-    /* I use margin: 0 auto to center a block element horizontally when it has a width limit. */
     margin: 0 auto 2rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid #444;
@@ -60,7 +60,6 @@ select {
 
 #fernbit h1 {
     margin: 0 0 0.5rem;
-    /* I use clamp() so the heading can scale with screen size without becoming ridiculously huge or tiny. */
     font-size: clamp(2rem, 4vw, 4rem);
     text-transform: lowercase;
 }
@@ -78,25 +77,22 @@ select {
 
 #main-navigation ul {
     list-style: none;
-    /* I remove list styling because the browser adds bullets and indentation by default. */
     padding: 0;
     margin: 0;
     display: flex;
     flex-wrap: wrap;
-    /* I let items wrap so the nav does not explode off-screen on smaller widths. */
     gap: 1rem;
 }
 
 #main-navigation a {
-    color: #ffffff;
+    color: #C90A5D;
     text-decoration: none;
     border-bottom: 1px dashed #666;
 }
 
 #main-navigation a:hover,
 #main-navigation a:focus {
-    /* I style hover and keyboard focus together so both mouse users and keyboard users get feedback. */
-    color: #f5f5f5;
+    color: #ff4f9a;
     border-color: #888;
 }
 
@@ -104,6 +100,19 @@ select {
 #main-content {
     max-width: 900px;
     margin: 0 auto;
+}
+
+/* I target the about page specifically so it actually centers properly on large screens. */
+#main-content.about {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* I remove paragraph width restriction ONLY for about page so it doesn’t look left-stuck. */
+#main-content.about p {
+    max-width: none;
+    text-align: justify;
+    hyphens: auto;
 }
 
 section {
@@ -145,7 +154,7 @@ p {
     display: inline-block;
     padding: 0.75rem 1rem;
     border: 1px dashed #666;
-    color: #ffffff;
+    color: #C90A5D;
     text-decoration: none;
     background: rgba(255, 255, 255, 0.03);
 }
@@ -161,31 +170,16 @@ p {
     border-color: #444;
 }
 
-.quick-links .quick-link-youtube {
-    border-color: #ff4e45;
-}
-
-.quick-links .quick-link-youtube:hover,
-.quick-links .quick-link-youtube:focus {
-    border-color: #ff7b74;
-}
-
-.quick-links .quick-link-shamebucket {
-    border-color: #f4b6d2;
-}
-
 /* I give the blog its own scroll area so long post lists do not force the whole page to become one giant column. */
 #blog-scroll-container {
     max-width: 900px;
     margin: 0 auto 2rem;
     max-height: 55vh;
-    /* I use vh here because I want the container height tied to the visible screen height. */
     overflow-y: auto;
     border: 1px solid rgba(255, 255, 255, 0.08);
     padding-right: 0.5rem;
 }
 
-/* I use the WebKit scrollbar pseudo-elements to lightly customize scrollbars in browsers that support them. */
 #blog-scroll-container::-webkit-scrollbar {
     width: 8px;
 }
@@ -214,7 +208,6 @@ p {
     color: #999;
 }
 
-/* I use article.blog-entry to be specific: only <article> elements with this class should get these styles. */
 article.blog-entry {
     margin: 0;
     padding: 0;
@@ -239,7 +232,6 @@ article.blog-entry:last-child {
     gap: 0.75rem;
     font-family: "Courier New", Courier, "Lucida Console", monospace;
     font-size: 0.92rem;
-    /* I use transition so hover/open state changes feel smoother instead of snapping instantly. */
     transition: background-color 0.2s ease;
     text-align: left;
 }
@@ -256,7 +248,6 @@ article.blog-entry:last-child {
     color: #999;
     font-size: 0.78rem;
     min-width: max-content;
-    /* I stop the date from shrinking because I want it to stay readable even when space gets tight. */
     flex-shrink: 0;
 }
 
@@ -269,12 +260,10 @@ article.blog-entry:last-child {
 .entry-content-wrapper {
     padding: 0 0.4rem 0.9rem;
     background: transparent;
-    /* I use an animation here to make opened content feel like it slides into place. */
     animation: slideDown 0.3s ease;
 }
 
 .entry-content-wrapper[hidden] {
-    /* I target the [hidden] attribute directly so CSS matches the same visibility state JavaScript is toggling. */
     display: none;
 }
 
@@ -285,62 +274,17 @@ article.blog-entry:last-child {
     line-height: 1.55;
 }
 
-.entry-content > *:first-child {
-    /* I use child selectors here to tidy the spacing of markdown-generated HTML without caring exactly which element type comes first. */
-    margin-top: 0;
-}
-
-.entry-content > *:last-child {
-    margin-bottom: 0;
-}
-
-.entry-content h1,
-.entry-content h2,
-.entry-content h3 {
-    margin: 1.5rem 0 0.75rem;
-    font-size: 1.1rem;
-    letter-spacing: 0.04em;
-}
-
-.entry-content ul,
-.entry-content ol {
-    margin: 0 0 1rem 1.25rem;
-    padding: 0;
-}
-
-.entry-content li {
-    margin-bottom: 0.35rem;
-}
-
 .entry-content a {
-    color: #ffffff;
+    color: #C90A5D;
     text-decoration: underline;
     text-underline-offset: 0.15em;
 }
 
-.entry-content code {
-    /* I style inline code differently so technical text stands out inside a paragraph. */
-    padding: 0.1rem 0.3rem;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 0.2rem;
-}
-
-.entry-content pre {
-    /* I let code blocks scroll horizontally instead of blowing up the layout on small screens. */
-    overflow-x: auto;
-    padding: 0.75rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-/* I use a utility class when I want one small reusable behavior instead of a full component style. */
 .hidden {
     display: none !important;
-    /* I use !important sparingly here because hiding should win even if another rule tries to display the element. */
 }
 
 @keyframes slideDown {
-    /* I define keyframes once, then reference that animation name anywhere I want the same motion. */
     from {
         opacity: 0;
         max-height: 0;
@@ -351,7 +295,6 @@ article.blog-entry:last-child {
     }
 }
 
-/* I position the write button fixed so it stays in the corner even while the page scrolls. */
 #write-btn {
     position: fixed;
     bottom: 2rem;
@@ -370,12 +313,10 @@ article.blog-entry:last-child {
     cursor: pointer;
     transition: all 0.3s ease;
     z-index: 999;
-    /* I raise the stacking order so the button stays above the post list instead of getting buried under it. */
 }
 
 #write-btn:hover {
     background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.3);
     transform: scale(1.1);
 }
 
@@ -383,7 +324,6 @@ article.blog-entry:last-child {
     transform: scale(0.95);
 }
 
-/* I style the footer separately so the page ending feels visually distinct from the main content. */
 #site-footer {
     max-width: 900px;
     margin: 3rem auto 0;
@@ -394,130 +334,4 @@ article.blog-entry:last-child {
 
 #site-footer p {
     margin: 0.25rem 0;
-}
-
-/* I use media queries when I want CSS to change based on screen size. */
-
-/* I start with the small-screen override because phones need the tightest spacing and simplest stacking. */
-@media (max-width: 599px) {
-    body {
-        padding: 1rem;
-        font-size: 14px;
-    }
-
-    #fernbit {
-        margin-bottom: 1.5rem;
-    }
-
-    #fernbit h1 {
-        font-size: clamp(1.5rem, 5vw, 2rem);
-    }
-
-    #fernbit p {
-        font-size: 0.9rem;
-    }
-
-    #main-navigation {
-        margin-bottom: 1.5rem;
-    }
-
-    #main-navigation ul {
-        /* I switch the nav list from a horizontal row to a vertical column on small screens. */
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    #main-navigation li {
-        width: 100%;
-    }
-
-    #main-navigation a {
-        display: block;
-        padding: 0.5rem 0;
-    }
-
-    h2 {
-        font-size: 1.25rem;
-    }
-
-    section {
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
-    }
-
-    #blog-scroll-container {
-        max-height: 50vh;
-    }
-
-    .entry-header {
-        padding: 0.75rem;
-        flex-direction: column;
-        /* I stack the date and title vertically on mobile so they do not fight for horizontal room. */
-        align-items: flex-start;
-    }
-
-    .entry-date {
-        min-width: auto;
-    }
-
-    .entry-title {
-        font-size: 0.95rem;
-    }
-
-    .entry-content-wrapper {
-        padding: 0.75rem;
-    }
-
-    #write-btn {
-        bottom: 1.5rem;
-        right: 1.5rem;
-        width: 50px;
-        height: 50px;
-        font-size: 1.5rem;
-    }
-
-    p {
-        font-size: 0.95rem;
-    }
-}
-
-/* I use a middle breakpoint for tablets so spacing can relax a bit before desktop sizes kick in. */
-@media (min-width: 600px) and (max-width: 899px) {
-    body {
-        padding: 1.5rem;
-        font-size: 15px;
-    }
-
-    #fernbit h1 {
-        font-size: clamp(1.75rem, 4vw, 2.5rem);
-    }
-
-    #main-navigation ul {
-        gap: 0.75rem;
-    }
-
-    h2 {
-        font-size: 1.5rem;
-    }
-
-    #blog-scroll-container {
-        max-height: 52vh;
-    }
-
-    .entry-header {
-        padding: 0.9rem;
-    }
-
-    #write-btn {
-        bottom: 1.75rem;
-        right: 1.75rem;
-    }
-}
-
-/* I keep the desktop rule small because the base styles already target larger screens pretty well. */
-@media (min-width: 900px) {
-    body {
-        padding: 2rem;
-        font-size: 16px;
-    }
 }
