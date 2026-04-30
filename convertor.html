@@ -57,7 +57,17 @@ label {
 function convert() {
     const input = document.getElementById("input").value;
     const title = document.getElementById("title").value || "Untitled";
-    const date = document.getElementById("date").value || "DD/MM/YYYY";
+    function getCurrentDateTime() {
+    const now = new Date();
+
+    const date = now.toLocaleDateString('en-GB'); // DD/MM/YYYY
+    const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    return `${date}, ${time}`;
+}
+
+const dateInput = document.getElementById("date");
+const date = dateInput.value || getCurrentDateTime();90
 
     const lines = input.split("\n");
 
@@ -111,6 +121,9 @@ function convert() {
     document.getElementById("output").value =
         JSON.stringify(jsonOutput, null, 2) + ",";
 }
+    window.onload = () => {
+    document.getElementById("date").value = getCurrentDateTime();
+};
 </script>
 
 </body>
