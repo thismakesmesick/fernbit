@@ -61,7 +61,7 @@
 
 <script>
 // I fetch the latest status from a JSON file so I do not have to edit HTML every time.
-fetch('status.json')
+fetch('/data/status.json')
     .then(res => res.json())
     .then(data => {
         const latest = data[0]; // newest first
