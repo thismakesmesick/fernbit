@@ -64,12 +64,14 @@ fetch('/data/status.json')
     .then(data => {
         const latest = data[0]; // newest first
 
+        const date = new Date(latest.isoDate);
+
+        // set text
         document.getElementById('status-text').textContent = latest.text;
 
-        // format ISO date nicely
-        const date = new Date(latest.isoDate);
-        document.getElementById('status-text').textContent +=
-            " (" + date.toLocaleString('en-GB') + ")";
+        // set date on its own line (no brackets)
+        document.getElementById('status-date').textContent =
+            date.toLocaleString('en-GB');
     });
 
 </script>
