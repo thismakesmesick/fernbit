@@ -54,20 +54,41 @@ label {
 <textarea id="output" rows="15" readonly></textarea>
 
 <script>
+
+// ✅ STEP 1 — global helper (NOT inside convert)
+function getDateFormats() {
+    const now = new Date();
+
+    const displayDate = now.toLocaleString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+
+    const isoDate = now.toISOString();
+
+    return { displayDate, isoDate };
+}
+
+
+// main function
 function convert() {
     const input = document.getElementById("input").value;
     const title = document.getElementById("title").value || "Untitled";
-    function getCurrentDateTime() {
-    const now = new Date();
+    const dateInput = document.getElementById("date");
 
-    const date = now.toLocaleDateString('en-GB'); // DD/MM/YYYY
-    const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    let displayDate, isoDate;
 
-    return `${date}, ${time}`;
-}
-
-const dateInput = document.getElementById("date");
-const date = dateInput.value || getCurrentDateTime();90
+    if (dateInput.value) {
+        displayDate = dateInput.value;
+        isoDate = new Date(dateInput.value).toISOString();
+    } else {
+        const dates = getDateFormats();
+        displayDate = dates.displayDate;
+        isoDate = dates.isoDate;
+    }
 
     const lines = input.split("\n");
 
@@ -111,19 +132,25 @@ const date = dateInput.value || getCurrentDateTime();90
     if (inList) currentBlock += "</ul>";
     if (currentBlock !== "") blocks.push(currentBlock);
 
+    // ✅ updated JSON structure
     const jsonOutput = {
-        date: date,
+        displayDate: displayDate,
+        isoDate: isoDate,
         title: title,
         content: blocks
     };
 
-    // Format nicely for copy-paste
     document.getElementById("output").value =
         JSON.stringify(jsonOutput, null, 2) + ",";
 }
-    window.onload = () => {
-    document.getElementById("date").value = getCurrentDateTime();
+
+
+// ✅ auto-fill date on load
+window.onload = () => {
+    const { displayDate } = getDateFormats();
+    document.getElementById("date").value = displayDate;
 };
+
 </script>
 
 </body>
