@@ -5,18 +5,18 @@
     <meta name="robots" content="noindex, nofollow">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - fernbit</title>
+    <title>diary</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     
-    <section id="blogging">
-        <h2>Blog Log</h2>
+    <section id="diary">
+        <h2>oversharing</h2>
 
         <!-- Scroll container stays the same -->
-        <div id="blog-scroll-container">
-            <div id="blog-container">
+        <div id="diary-scroll-container">
+            <div id="diary-container">
                 <!-- Posts will be injected here -->
             </div>
         </div>
@@ -26,11 +26,11 @@
         fetch('/data/posts.json')
             .then(res => res.json())
             .then(posts => {
-                const container = document.getElementById('blog-container');
+                const container = document.getElementById('diary-container');
 
                 posts.forEach(post => {
                     const article = document.createElement('article');
-                    article.className = 'blog-entry';
+                    article.className = 'diary-entry';
 
                     const contentHTML = post.content
                         .map(p => `<p>${p}</p>`)
