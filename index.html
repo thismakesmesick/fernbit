@@ -59,19 +59,36 @@
 
 <script>
 // I fetch the latest status from a JSON file so I do not have to edit HTML every time.
-fetch('/data/status.json')
+
+// 🔧 FIX: removed leading "/" so path works both locally and on Netlify
+fetch('data/status.json')
     .then(res => res.json())
     .then(data => {
-        const latest = data[0]; // newest first
+
+        // 🔧 FIX: JSON now uses { statuses: [...] }
+        // also ensures newest entry is always shown
+        const latest = data.statuses.sort(
+            (a, b) => new Date(b.isoDate) - new Date(a.isoDate)
+        )[0];
 
         const date = new Date(latest.isoDate);
 
         // set text
         document.getElementById('status-text').textContent = latest.text;
 
-        // set date on its own line (no brackets)
+        // 🔧 FIX: remove seconds from display
         document.getElementById('status-date').textContent =
-            date.toLocaleString('en-GB');
+            date.toLocaleString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+    })
+    .catch(err => {
+        // 🔧 helpful debug if something still fails
+        console.error("Status failed to load:", err);
     });
 
 </script>

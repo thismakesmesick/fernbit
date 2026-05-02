@@ -48,7 +48,8 @@ input {
 <body>
 
 <div id="container">
-    <h2>Status Log</h2>
+    <h2>status log</h2>
+<p><a href="index.html">get me outta here</a></p>
 
     <input 
         type="date" 
@@ -62,6 +63,7 @@ input {
 <script>
 
 let allStatuses = [];
+
 
 async function loadStatuses() {
     const res = await fetch("data/status.json");
