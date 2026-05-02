@@ -152,9 +152,8 @@ p {
    BLOG CARD SYSTEM
    ========================= */
 
-/* FULL CARD CLICKABLE */
 .post-card {
-    display: block; /* IMPORTANT */
+    display: block;
     position: relative;
     margin-bottom: 2rem;
     padding: 1.5rem;
@@ -173,7 +172,6 @@ p {
         box-shadow 0.15s ease;
 }
 
-/* Offset border */
 .post-card::after {
     content: "";
     position: absolute;
@@ -185,19 +183,16 @@ p {
     z-index: -1;
 }
 
-/* Layout inside card */
 .post-inner {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-/* Remove width restriction */
 .post-card p {
     max-width: none;
 }
 
-/* Elements */
 .post-date {
     font-size: 0.8rem;
     opacity: 0.6;
@@ -217,7 +212,6 @@ p {
     opacity: 0.7;
 }
 
-/* Hover */
 .post-card:hover {
     background: #d037de67;
     transform: translate(-3px, -3px);
@@ -235,24 +229,23 @@ p {
 }
 
 /* =========================
-   BLOG POSTS
+   BLOG POSTS (UPDATED)
    ========================= */
 
 .blog-post {
     margin: 60px auto;
     padding: 0 20px;
 
-    font-size: 15.5px;
-    line-height: 1.8;
+    font-size: 15px;          /* slightly smaller */
+    line-height: 1.7;
 
-    text-align: justify;
+    text-align: left;         /* 🔥 key change */
 }
 
-/* override global width limit */
+/* override global width */
 .blog-post p {
     max-width: none;
     margin-bottom: 1.4em;
-    hyphens: auto;
 }
 
 /* Quotes */
@@ -262,7 +255,7 @@ p {
     border-left: 3px solid #ccc;
 
     font-style: italic;
-    line-height: 1.8;
+    line-height: 1.7;
 }
 
 /* Citation */
@@ -273,13 +266,26 @@ p {
     color: #6ab3f4;
 }
 
-/* Links in posts */
+/* Links */
 .blog-post a {
     text-decoration: underline;
 }
 
 .blog-post a:hover {
     color: #ff4f9a;
+}
+
+/* 📱 MOBILE IMPROVEMENTS */
+@media (max-width: 600px) {
+    body {
+        padding: 1rem; /* reduce outer padding */
+    }
+
+    .blog-post {
+        padding: 0 10px;   /* feels more full-width */
+        font-size: 14.5px; /* closer to purple site */
+        line-height: 1.65;
+    }
 }
 
 /* =========================
