@@ -174,18 +174,25 @@ p {
    BLOG CARD SYSTEM
    ========================= */
 /* =========================
-   BLOG CARD SYSTEM (FIXED)
+   BLOG CARD SYSTEM (FIXED (again hopefully))
    ========================= */
 
 .post-card {
     position: relative;
+    z-index: 0;
     margin-bottom: 2rem;
     padding: 1.5rem;
     border: 2px solid #C90A5D;
     background: #000;
+    /*depth attempt like the shadow thing*/
+       box-shadow: 2px 2px 0 rgba(201, 10, 93, 0.4);
+       transition: 
+       transform 0.15s ease,
+       background 0.2s ease,
+       box-shadow 0.15s ease;
 }
 
-/* clean offset border */
+/* 2nd border offset*/
 .post-card::after {
     content: "";
     position: absolute;
@@ -233,13 +240,19 @@ p {
 }
 
 /* hover */
-.post-card {
-    transition: transform 0.15s ease;
-}
-
-.post-card:hover {
+.post-card:hover,
+.post-card:focus-within {
+    background: #d037de67;
     transform: translate(-3px, -3px);
-    
+/*extra shadowness on hover*/
+box-shadow: 5px 5px 0 rgba(201, 10, 93, 0.6);
+}
+.post-card:active {
+    transform: translate(0, 0);
+    box-shadow: 2px 2px 0 rgba(201, 10, 93, 0.4);
+}
+.post-card {
+    -webkit-tap-highlight-color: transparent;
 }
 #blog {
     border-bottom: none;
