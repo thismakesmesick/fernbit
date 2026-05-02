@@ -273,3 +273,43 @@ box-shadow: 5px 5px 0 rgba(201, 10, 93, 0.6);
 #site-footer p {
     margin: 0.25rem 0;
 }
+/* ===== BLOG POSTS ===== */
+
+.blog-post {
+    max-width: 900px;        /* wider, but still readable */
+    margin: 60px auto;       /* center on page */
+    padding: 0 20px;         /* breathing room on small screens */
+
+    font-size: 16px;
+    line-height: 1.8;        /* more line spacing */
+
+    text-align: justify;     /* blocksatz */
+}
+
+/* Better spacing between paragraphs */
+.blog-post p {
+    margin-bottom: 1.4em;
+}
+
+/* Prevent ugly spacing issues with justified text */
+.blog-post p {
+    hyphens: auto;
+}
+
+/* Make quotes stand out */
+.blog-post blockquote {
+    margin: 30px 0;
+    padding-left: 20px;
+    border-left: 3px solid #ccc;
+
+    font-style: italic;
+    line-height: 1.8;
+}
+
+/* Citation styling */
+.blog-post cite {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #6ab3f4;
+}
