@@ -27,6 +27,15 @@ button {
     cursor: pointer;
 }
 
+.button-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.button-row button {
+    flex: 1;
+}
+
 label {
     margin-top: 1rem;
     display: block;
@@ -48,8 +57,12 @@ label {
 <label>Markdown / Status Text</label>
 <textarea id="input" rows="10" placeholder="Write your entry or status here..."></textarea>
 
-<button onclick="convertDiary()">Convert Diary</button>
-<button onclick="convertStatus()">Convert Status</button>
+<div class="button-row">
+    <button onclick="convertDiary()">Convert Diary</button>
+    <button onclick="convertStatus()">Convert Status</button>
+</div>
+
+<button onclick="copyOutput()">Copy All</button>
 
 <label>Generated JSON</label>
 <textarea id="output" rows="15" readonly></textarea>
@@ -74,7 +87,7 @@ function getDateFormats() {
 }
 
 
-// DIARY CONVERTER
+// DIARY CONVERTER (unchanged)
 function convertDiary() {
     const input = document.getElementById("input").value;
     const title = document.getElementById("title").value || "Untitled";
@@ -134,18 +147,18 @@ function convertDiary() {
     if (currentBlock !== "") blocks.push(currentBlock);
 
     const jsonOutput = {
-        displayDate: displayDate,
-        isoDate: isoDate,
-        title: title,
+        displayDate,
+        isoDate,
+        title,
         content: blocks
     };
 
     document.getElementById("output").value =
-        JSON.stringify(jsonOutput, null, 2) + ",";
+        JSON.stringify(jsonOutput, null, 2);
 }
 
 
-// STATUS CONVERTER
+// STATUS CONVERTER (unchanged)
 function convertStatus() {
     const input = document.getElementById("input").value.trim();
     const dateInput = document.getElementById("date");
@@ -160,11 +173,19 @@ function convertStatus() {
 
     const jsonOutput = {
         text: input,
-        isoDate: isoDate
+        isoDate
     };
 
     document.getElementById("output").value =
-        JSON.stringify(jsonOutput, null, 2) + ",";
+        JSON.stringify(jsonOutput, null, 2);
+}
+
+// COPY BUTTON
+function copyOutput() {
+    const output = document.getElementById("output");
+    output.select();
+    output.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(output.value);
 }
 
 
