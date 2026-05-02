@@ -1,6 +1,12 @@
-[
-  {
-    "text": "sober and coding from my phone at work. thinking about making this a true blog",
-    "isoDate": "2026-04-30T13:20:00"
-  }
-]
+{
+  "statuses": [
+    {
+      "text": "so only two days later and I am back and back to obsessing. this feels extra fun on my handheld keyboard :)",
+      "isoDate": "2026-02-05T11:41:00.000Z"
+    },
+    {
+      "text": "sober and coding from my phone at work. thinking about making this a true blog",
+      "isoDate": "2026-04-30T13:20:00.000Z"
+    }
+  ]
+}
