@@ -19,7 +19,7 @@ html, body {
 body {
     padding: 2rem;
     letter-spacing: 0.01em;
-    text-align: left;
+    text-align: left; /* ALL TEXT LEFT */
 }
 
 /* Links */
@@ -28,7 +28,7 @@ a {
 }
 
 /* =========================
-   LAYOUT
+   LAYOUT (CENTERED DESKTOP)
    ========================= */
 
 #fernbit,
@@ -140,7 +140,7 @@ p {
 }
 
 /* =========================
-   BLOG CARD SYSTEM (RESTORED)
+   BLOG CARD SYSTEM (FINAL FIX)
    ========================= */
 
 .post-card {
@@ -149,22 +149,21 @@ p {
     z-index: 0;
     margin-bottom: 2rem;
     padding: 1.5rem;
+
     border: 2px solid #C90A5D;
     background: #000;
 
-    /* YOUR ORIGINAL DEPTH */
-    box-shadow: 2px 2px 0 rgba(201, 10, 93, 0.4);
-
-    transition:
-        transform 0.15s ease,
-        background 0.2s ease,
-        box-shadow 0.15s ease;
-
     text-decoration: none;
     color: inherit;
+
+    /* ORIGINAL DEPTH (STATIC) */
+    box-shadow: 2px 2px 0 rgba(201, 10, 93, 0.4);
+
+    /* ONLY background transitions */
+    transition: background 0.2s ease;
 }
 
-/* offset second border */
+/* SECOND OUTLINE (PERMANENT) */
 .post-card::after {
     content: "";
     position: absolute;
@@ -176,7 +175,7 @@ p {
     z-index: -1;
 }
 
-/* layout */
+/* Layout */
 .post-inner {
     display: flex;
     flex-direction: column;
@@ -187,7 +186,7 @@ p {
     max-width: none;
 }
 
-/* text elements */
+/* Elements */
 .post-date {
     font-size: 0.8rem;
     opacity: 0.6;
@@ -207,16 +206,14 @@ p {
     opacity: 0.7;
 }
 
-/* HOVER — SAME AS BEFORE */
+/* 🔥 HOVER = COLOR ONLY */
 .post-card:hover {
-    background: #d037de67;
-    transform: translate(-3px, -3px);
-    box-shadow: 5px 5px 0 rgba(201, 10, 93, 0.6);
+    background: #d037de33;
 }
 
+/* Click */
 .post-card:active {
-    transform: translate(0, 0);
-    box-shadow: 2px 2px 0 rgba(201, 10, 93, 0.4);
+    background: #d037de55;
 }
 
 .post-card {
@@ -286,7 +283,7 @@ p {
 }
 
 /* =========================
-   MOBILE
+   MOBILE (FULL WIDTH FEEL)
    ========================= */
 
 @media (max-width: 600px) {
