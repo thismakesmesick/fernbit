@@ -19,7 +19,7 @@ html, body {
 body {
     padding: 2rem;
     letter-spacing: 0.01em;
-    text-align: left; /* 🔥 ALL TEXT LEFT */
+    text-align: left;
 }
 
 /* Links */
@@ -28,7 +28,7 @@ a {
 }
 
 /* =========================
-   LAYOUT (CENTERED DESKTOP)
+   LAYOUT
    ========================= */
 
 #fernbit,
@@ -140,25 +140,31 @@ p {
 }
 
 /* =========================
-   BLOG CARD SYSTEM (FIXED)
+   BLOG CARD SYSTEM (RESTORED)
    ========================= */
 
 .post-card {
     display: block;
     position: relative;
+    z-index: 0;
     margin-bottom: 2rem;
     padding: 1.5rem;
-
     border: 2px solid #C90A5D;
     background: #000;
 
+    /* YOUR ORIGINAL DEPTH */
+    box-shadow: 2px 2px 0 rgba(201, 10, 93, 0.4);
+
+    transition:
+        transform 0.15s ease,
+        background 0.2s ease,
+        box-shadow 0.15s ease;
+
     text-decoration: none;
     color: inherit;
-
-    /* NO movement, NO shadow tricks */
 }
 
-/* second outline (permanent) */
+/* offset second border */
 .post-card::after {
     content: "";
     position: absolute;
@@ -181,7 +187,7 @@ p {
     max-width: none;
 }
 
-/* elements */
+/* text elements */
 .post-date {
     font-size: 0.8rem;
     opacity: 0.6;
@@ -201,13 +207,16 @@ p {
     opacity: 0.7;
 }
 
-/* hover = highlight only */
+/* HOVER — SAME AS BEFORE */
 .post-card:hover {
-    background: #d037de33;
+    background: #d037de67;
+    transform: translate(-3px, -3px);
+    box-shadow: 5px 5px 0 rgba(201, 10, 93, 0.6);
 }
 
 .post-card:active {
-    background: #d037de55;
+    transform: translate(0, 0);
+    box-shadow: 2px 2px 0 rgba(201, 10, 93, 0.4);
 }
 
 .post-card {
@@ -226,7 +235,7 @@ p {
     font-size: 15px;
     line-height: 1.7;
 
-    text-align: left; /* 🔥 enforced */
+    text-align: left;
 }
 
 .blog-post p {
@@ -277,13 +286,13 @@ p {
 }
 
 /* =========================
-   📱 MOBILE (FULL WIDTH FEEL)
+   MOBILE
    ========================= */
 
 @media (max-width: 600px) {
 
     body {
-        padding: 1rem; /* less outer margin */
+        padding: 1rem;
     }
 
     #fernbit,
@@ -295,12 +304,12 @@ p {
     }
 
     .blog-post {
-        padding: 0 8px;   /* almost edge-to-edge */
+        padding: 0 8px;
         font-size: 14.5px;
         line-height: 1.65;
     }
 
     p {
-        max-width: none; /* remove text restriction */
+        max-width: none;
     }
 }
