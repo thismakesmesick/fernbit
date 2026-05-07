@@ -329,6 +329,7 @@ MOBILE (FULL WIDTH FEEL)
 
 .tumblr-dropdown {
     position: relative;
+    display: inline-block;
 }
 
 .tumblr-menu {
@@ -340,18 +341,25 @@ MOBILE (FULL WIDTH FEEL)
     top: 100%;
     left: 0;
 
-    margin-top: 8px;
+    margin-top: 6px;
 
-    padding: 0;
+    padding: 8px 0;
 
     list-style: none;
 
     background: black;
 
     z-index: 1000;
+
+    min-width: 220px;
+}
+
+.tumblr-menu.show {
+    display: block;
 }
 
 .tumblr-menu li {
+    display: block;
     margin: 0;
     padding: 0;
 }
@@ -363,8 +371,4 @@ MOBILE (FULL WIDTH FEEL)
     padding: 6px 0;
 
     white-space: nowrap;
-}
-
-.tumblr-menu.show {
-    display: block;
 }
