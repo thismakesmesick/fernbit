@@ -11,6 +11,81 @@
 
 <link rel="stylesheet" href="style.css">
 
+<style>
+
+#scan-output p,
+#scan-output a {
+
+    margin-bottom: 12px;
+
+}
+
+.scan-line {
+
+    opacity: 0;
+
+    animation: fadeIn 0.4s forwards;
+
+}
+
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+.cursor::after {
+
+    content: "_";
+
+    animation: blink 1s infinite;
+
+}
+
+@keyframes blink {
+
+    0% { opacity: 1; }
+
+    50% { opacity: 0; }
+
+    100% { opacity: 1; }
+
+}
+
+.memory-block {
+
+    margin-bottom: 36px;
+
+    padding-left: 12px;
+
+    border-left: 1px solid currentColor;
+
+}
+
+.memory-link {
+
+    display: inline-block;
+
+    margin-top: 8px;
+
+}
+
+.error-text {
+
+    margin-top: 32px;
+
+}
+
+</style>
+
 </head>
 
 <body>
@@ -19,7 +94,7 @@
 
     <h1>on this day</h1>
 
-    <p>archive scan in progress...</p>
+    <p>digital archaeology</p>
 
 </header>
 
@@ -29,7 +104,9 @@
 
     <div id="scan-output">
 
-        <p>booting archive recovery tool...</p>
+        <p class="cursor">
+            booting recovery utility
+        </p>
 
     </div>
 
@@ -51,88 +128,134 @@ const day = String(today.getDate()).padStart(2, '0');
 
 const currentYear = today.getFullYear();
 
-output.innerHTML = "";
+const loadingMessages = [
 
-let foundAnything = false;
+    "mounting archive drive...",
+    "searching corrupted sectors...",
+    "reading emotional residue...",
+    "cross-referencing timestamps...",
+    "recovered fragments listed below"
 
-
-// fake loading line
-const loading = document.createElement("p");
-
-loading.textContent =
-    "SCANNING MEMORY SECTORS...";
-
-output.appendChild(loading);
+];
 
 
-// create yearly scan entries
-for (let year = 2022; year <= currentYear; year++) {
+// helper function
+function addLine(text, delay = 0) {
 
-    const wrapper = document.createElement("div");
+    setTimeout(() => {
 
-    wrapper.style.marginBottom = "28px";
+        const line = document.createElement("p");
 
+        line.textContent = text;
 
-    // fake scan bar
-    const bar = document.createElement("p");
+        line.classList.add("scan-line");
 
-    bar.textContent =
-        "██████████";
+        output.appendChild(line);
 
+    }, delay);
 
-    // year label
-    const yearText = document.createElement("p");
-
-    yearText.textContent =
-        `${year} ARCHIVE SCAN COMPLETE`;
-
-
-    // link
-    const link = document.createElement("a");
-
-    link.href =
-        `https://${blog}.tumblr.com/day/${year}/${month}/${day}`;
-
-    link.target = "_blank";
-
-    link.textContent =
-        "[ OPEN FILE ]";
-
-
-    // fake status text
-    const status = document.createElement("p");
-
-    status.textContent =
-        "MEMORY FRAGMENTS DETECTED";
-
-
-    wrapper.appendChild(bar);
-
-    wrapper.appendChild(yearText);
-
-    wrapper.appendChild(status);
-
-    wrapper.appendChild(link);
-
-    output.appendChild(wrapper);
-
-    foundAnything = true;
 }
 
 
-// if somehow no years exist
-if (!foundAnything) {
+// loading sequence
+loadingMessages.forEach((msg, index) => {
 
-    output.innerHTML = `
+    addLine(
+        "> " + msg,
+        700 * (index + 1)
+    );
 
-        <p>SCANNING...</p>
+});
 
-        <br>
 
-        <p>Woah woah not that old yet</p>
+// actual archive scan
+setTimeout(async () => {
 
-    `;
-}
+    let foundAnything = false;
+
+    for (let year = 2022; year <= currentYear; year++) {
+
+        const url =
+            `https://${blog}.tumblr.com/day/${year}/${month}/${day}`;
+
+        try {
+
+            const response = await fetch(url);
+
+            const html = await response.text();
+
+            // detect tumblr empty page
+            if (
+                html.toLowerCase().includes("there's nothing here")
+            ) {
+
+                continue;
+
+            }
+
+            foundAnything = true;
+
+            const block = document.createElement("div");
+
+            block.classList.add("memory-block");
+
+            const yearLine = document.createElement("p");
+
+            yearLine.textContent =
+                `${day}/${month}/${year}`;
+
+            const status = document.createElement("p");
+
+            status.textContent =
+                "memory fragment recoverable";
+
+            const link = document.createElement("a");
+
+            link.href = url;
+
+            link.target = "_blank";
+
+            link.textContent =
+                "[ excavate archive ]";
+
+            link.classList.add("memory-link");
+
+            block.appendChild(yearLine);
+
+            block.appendChild(status);
+
+            block.appendChild(link);
+
+            output.appendChild(block);
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "archive scan failed:",
+                error
+            );
+
+        }
+
+    }
+
+    // no posts found
+    if (!foundAnything) {
+
+        const nothing = document.createElement("p");
+
+        nothing.textContent =
+            "Woah woah not that old yet";
+
+        nothing.classList.add("error-text");
+
+        output.appendChild(nothing);
+
+    }
+
+}, 4500);
 
 </script>
 
