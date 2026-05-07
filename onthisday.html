@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>on this day</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header id="fernbit">
+    <h1>on this day</h1>
+    <p>digital archaeology</p>
+</header>
+
+<main id="main-content">
+
+    <section>
+
+        <div id="results">
+            scribbling through the archives...
+        </div>
+
+    </section>
+
+</main>
+
+<script>
+
+const blog = "thismakesmesick";
+
+const results = document.getElementById("results");
+
+const today = new Date();
+
+const month = String(today.getMonth() + 1).padStart(2, '0');
+
+const day = String(today.getDate()).padStart(2, '0');
+
+const currentYear = today.getFullYear();
+
+results.innerHTML = "";
+
+let foundPosts = false;
+
+for (let year = 2022; year <= currentYear; year++) {
+
+    const url =
+        `https://${blog}.tumblr.com/day/${year}/${month}/${day}`;
+
+    const link = document.createElement("a");
+
+    link.href = url;
+
+    link.target = "_blank";
+
+    link.textContent =
+        `${day}/${month}/${year}`;
+
+    link.style.display = "block";
+
+    link.style.marginBottom = "14px";
+
+    results.appendChild(link);
+
+    foundPosts = true;
+}
+
+if (!foundPosts) {
+
+    results.innerHTML =
+        "Woah woah not that old yet";
+
+}
+
+</script>
+
+</body>
+
+</html>
