@@ -158,7 +158,7 @@ function convertDiary() {
 }
 
 
-// STATUS CONVERTER (unchanged)
+// STATUS CONVERTER (datedfixed)
 function convertStatus() {
     const input = document.getElementById("input").value.trim();
     const dateInput = document.getElementById("date");
@@ -166,28 +166,26 @@ function convertStatus() {
     let isoDate;
 
     if (dateInput.value) {
-        isoDate = new Date(dateInput.value).toISOString();
+        const [year, month, day] = dateInput.value.split("-");
+        isoDate = `${day}-${month}-${year}`;
     } else {
-        isoDate = new Date().toISOString();
+        const now = new Date();
+
+        const day = String(now.getDate()).padStart(2, "0");
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+        const year = now.getFullYear();
+
+        isoDate = `${day}-${month}-${year}`;
     }
 
     const jsonOutput = {
-        text: input,
+        text: input.endsWith(",") ? input : input + ",",
         isoDate
     };
 
     document.getElementById("output").value =
         JSON.stringify(jsonOutput, null, 2);
 }
-
-// COPY BUTTON
-function copyOutput() {
-    const output = document.getElementById("output");
-    output.select();
-    output.setSelectionRange(0, 99999);
-    navigator.clipboard.writeText(output.value);
-}
-
 
 // autofill date
 window.onload = () => {
