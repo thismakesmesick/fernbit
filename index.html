@@ -69,7 +69,7 @@
                     </li>
 
                     <li>
-                        <a href="#" id="onThisDayLink" target="_blank">
+                        <a href="onthisday.html">
                             on this day
                         </a>
                     </li>
@@ -160,30 +160,8 @@ function toggleTumblrMenu(event) {
     menu.classList.toggle("show");
 }
 
-
-// generate "on this day" link
-(function () {
-
-    const today = new Date();
-
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-
-    const day = String(today.getDate()).padStart(2, '0');
-
-    // random year between 2022 and current year
-    const currentYear = today.getFullYear();
-
-    const randomYear =
-        Math.floor(Math.random() * (currentYear - 2022 + 1)) + 2022;
-
-    const url =
-        `https://thismakesmesick.tumblr.com/day/${randomYear}/${month}/${day}`;
-
-    document.getElementById("onThisDayLink").href = url;
-
-})();
-
 </script>
 
 </body>
+
 </html>
