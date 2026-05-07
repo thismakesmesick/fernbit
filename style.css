@@ -372,3 +372,12 @@ MOBILE (FULL WIDTH FEEL)
 
     white-space: nowrap;
 }
+/* force dropdown behavior */
+
+.tumblr-dropdown .tumblr-menu {
+    display: none !important;
+}
+
+.tumblr-dropdown .tumblr-menu.show {
+    display: block !important;
+}
