@@ -16,19 +16,24 @@
 <body>
 
 <header id="fernbit">
+
     <h1>on this day</h1>
-    <p>digital archaeology</p>
+
+    <p>archive scan in progress...</p>
+
 </header>
 
 <main id="main-content">
 
-    <section>
+<section id="scan-section">
 
-        <div id="results">
-            scribbling through the archives...
-        </div>
+    <div id="scan-output">
 
-    </section>
+        <p>booting archive recovery tool...</p>
+
+    </div>
+
+</section>
 
 </main>
 
@@ -36,7 +41,7 @@
 
 const blog = "thismakesmesick";
 
-const results = document.getElementById("results");
+const output = document.getElementById("scan-output");
 
 const today = new Date();
 
@@ -46,38 +51,87 @@ const day = String(today.getDate()).padStart(2, '0');
 
 const currentYear = today.getFullYear();
 
-results.innerHTML = "";
+output.innerHTML = "";
 
-let foundPosts = false;
+let foundAnything = false;
 
+
+// fake loading line
+const loading = document.createElement("p");
+
+loading.textContent =
+    "SCANNING MEMORY SECTORS...";
+
+output.appendChild(loading);
+
+
+// create yearly scan entries
 for (let year = 2022; year <= currentYear; year++) {
 
-    const url =
-        `https://${blog}.tumblr.com/day/${year}/${month}/${day}`;
+    const wrapper = document.createElement("div");
 
+    wrapper.style.marginBottom = "28px";
+
+
+    // fake scan bar
+    const bar = document.createElement("p");
+
+    bar.textContent =
+        "██████████";
+
+
+    // year label
+    const yearText = document.createElement("p");
+
+    yearText.textContent =
+        `${year} ARCHIVE SCAN COMPLETE`;
+
+
+    // link
     const link = document.createElement("a");
 
-    link.href = url;
+    link.href =
+        `https://${blog}.tumblr.com/day/${year}/${month}/${day}`;
 
     link.target = "_blank";
 
     link.textContent =
-        `${day}/${month}/${year}`;
+        "[ OPEN FILE ]";
 
-    link.style.display = "block";
 
-    link.style.marginBottom = "14px";
+    // fake status text
+    const status = document.createElement("p");
 
-    results.appendChild(link);
+    status.textContent =
+        "MEMORY FRAGMENTS DETECTED";
 
-    foundPosts = true;
+
+    wrapper.appendChild(bar);
+
+    wrapper.appendChild(yearText);
+
+    wrapper.appendChild(status);
+
+    wrapper.appendChild(link);
+
+    output.appendChild(wrapper);
+
+    foundAnything = true;
 }
 
-if (!foundPosts) {
 
-    results.innerHTML =
-        "Woah woah not that old yet";
+// if somehow no years exist
+if (!foundAnything) {
 
+    output.innerHTML = `
+
+        <p>SCANNING...</p>
+
+        <br>
+
+        <p>Woah woah not that old yet</p>
+
+    `;
 }
 
 </script>
