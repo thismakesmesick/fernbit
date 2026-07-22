@@ -394,59 +394,7 @@ FOOTER
 
 }
 
-/* =========================
-TUMBLR DROPDOWN
-========================= */
 
-.tumblr-dropdown {
-
-    position: relative;
-
-}
-
-.tumblr-menu {
-
-    display: none;
-
-    position: absolute;
-
-    top: calc(100% + .5rem);
-
-    left: 0;
-
-    min-width: 220px;
-
-    padding: .5rem 0;
-
-    background: #000;
-
-    border: 1px solid #444;
-
-    list-style: none;
-
-    z-index: 1000;
-
-}
-
-.tumblr-menu.show {
-
-    display: block;
-
-}
-
-.tumblr-menu a {
-
-    display: block;
-
-    padding: .45rem 1rem;
-
-}
-
-.tumblr-menu a:hover {
-
-    background: rgba(255,255,255,.05);
-
-}
 
 /* =========================
 MOBILE
