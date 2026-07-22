@@ -132,6 +132,8 @@ function showCard(index) {
     });
 
     current = index;
+    document.getElementById("carousel-counter").textContent =
+    `${index + 1} / ${cards.length}`;
 }
 
 document.getElementById("next").addEventListener("click", () => {
