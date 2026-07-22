@@ -1,167 +1,196 @@
 <!DOCTYPE html>
-<!-- I start with the doctype so the browser knows I want modern HTML rules instead of weird older compatibility behavior. -->
 <html lang="en">
-
 <head>
-    <!-- I use <head> for information about the page itself, not for visible page content. -->
-
     <meta charset="UTF-8">
-    <!-- I set the character encoding to UTF-8 so text symbols and punctuation display correctly. -->
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- I add the viewport meta tag so the layout scales properly on phones instead of pretending the page is desktop-width. -->
-
     <title>fernbit</title>
-    <!-- I use <title> to control the name shown in the browser tab and bookmarks. -->
-
     <link rel="stylesheet" href="style.css">
-    <!-- I load my shared CSS file here so this page can reuse one visual system instead of stuffing styles into the HTML. -->
 </head>
 
 <body>
-    <!-- I use <body> for everything the visitor actually sees on the page. -->
 
-    <!-- I use <header> for the top intro area of the page because this section introduces the site. -->
-    <header id="fernbit">
+<header id="fernbit">
+    <h1>fernbit</h1>
+</header>
 
-        <!-- I use an id when I want one specific element to have a unique hook for styling or scripting. -->
+<nav id="main-navigation">
+    <ul>
+        <li><a href="index.html">Home</a></li>
 
-        <h1>fernbit</h1>
-        <!-- I use <h1> for the main page heading. -->
+        <li><a href="about.html">About</a></li>
 
-        <p>screen vomit</p>
+        <li class="tumblr-dropdown">
 
-    </header>
+            <a href="#" class="tumblr-trigger" onclick="toggleTumblrMenu(event)">
+                Tumblr
+            </a>
 
-    <!-- I use <nav> for grouped navigation links so the site menu is clearly marked as navigation. -->
-    <nav id="main-navigation">
+            <ul class="tumblr-menu" id="tumblrMenu">
 
-        <!-- I use <ul> for a list of links because the menu is a list of equal navigation choices. -->
-        <ul>
+                <li>
+                    <a href="https://thismakesmesick.tumblr.com/?source=share" target="_blank">
+                        this makes me sick
+                    </a>
+                </li>
 
-            <!-- I use <li> for each individual list item inside the unordered list. -->
+                <li>
+                    <a href="https://thismakesmesick.tumblr.com/random" target="_blank">
+                        random post
+                    </a>
+                </li>
 
-            <li><a href="index.html">Home</a></li>
+                <li>
+                    <a href="onthisday.html">
+                        on this day
+                    </a>
+                </li>
 
-            <li><a href="about.html">About</a></li>
+            </ul>
 
-            <li><a href="blog.html">Blog</a></li>
+        </li>
 
-            <!-- Tumblr dropdown -->
-            <li class="tumblr-dropdown">
+        <li><a href="contact.html">Contact</a></li>
 
-                <a href="#" class="tumblr-trigger" onclick="toggleTumblrMenu(event)">
-                    Tumblr
-                </a>
+    </ul>
+</nav>
+<main id="main-content">
 
-                <ul class="tumblr-menu" id="tumblrMenu">
+<section id="featured-posts">
 
-                    <li>
-                        <a href="https://thismakesmesick.tumblr.com/?source=share" target="_blank">
-                            this makes me sick
-                        </a>
-                    </li>
+    <button class="carousel-button" id="prev">&#10094;</button>
 
-                    <li>
-                        <a href="https://thismakesmesick.tumblr.com/random" target="_blank">
-                            random post
-                        </a>
-                    </li>
+    <div class="carousel">
 
-                    <li>
-                        <a href="onthisday.html">
-                            on this day
-                        </a>
-                    </li>
+        <a class="post-card active" href="blog%20posts/03-05-26.html">
 
-                </ul>
+            <p class="post-date">03 May 2026</p>
 
-            </li>
+            <h2>Jenlena Is Too Relatable</h2>
 
-            <li><a href="contact.html">Contact</a></li>
+            <p>
+                On unemployment, Mood Swings, alcoholism, puppy play,
+                dissociation and the strange comfort of seeing yourself
+                reflected in someone else's mess.
+            </p>
 
-        </ul>
+        </a>
 
-    </nav>
+        <a class="post-card" href="blog%20posts/post2.html">
 
-    <!-- I use <main> for the primary content of this page. -->
-    <main id="main-content">
+            <p class="post-date">Coming Soon</p>
 
-        <!-- I use <section> to group related content into one meaningful chunk. -->
-        <section id="home">
+            <h2>Untitled</h2>
 
-            <h2><a href="status.html">status</a></h2>
+            <p>
+                Placeholder for a future post.
+            </p>
 
-            <!-- status text will be injected here -->
-            <p id="status-text">scribbling...</p>
+        </a>
 
-            <p id="status-date">lost my watch...</p>
+        <a class="post-card" href="blog%20posts/post3.html">
 
-        </section>
+            <p class="post-date">Coming Soon</p>
 
-    </main>
+            <h2>Untitled</h2>
 
-    <!-- I use <footer> for closing information about the page or site. -->
-    <footer id="site-footer">
+            <p>
+                Placeholder for another future post.
+            </p>
 
-        <p>&copy; 2026 Penny (Cole isn't even helping properly). All rights reserved.</p>
+        </a>
 
-    </footer>
+    </div>
 
+    <button class="carousel-button" id="next">&#10095;</button>
+
+</section>
+
+<div class="carousel-dots">
+
+    <button class="dot active"></button>
+    <button class="dot"></button>
+    <button class="dot"></button>
+
+</div>
+
+</main>
 <script>
 
-// I fetch the latest status from a JSON file so I do not have to edit HTML every time.
+const cards = document.querySelectorAll(".post-card");
+const dots = document.querySelectorAll(".dot");
 
-// 🔧 FIX: removed leading "/" so path works both locally and on Netlify
-fetch('data/status.json')
+let current = 0;
 
-    .then(res => res.json())
+function showCard(index) {
 
-    .then(data => {
-
-        // 🔧 FIX: JSON now uses { statuses: [...] }
-        // also ensures newest entry is always shown
-        const latest = data.statuses.sort(
-            (a, b) => new Date(b.isoDate) - new Date(a.isoDate)
-        )[0];
-
-        const date = new Date(latest.isoDate);
-
-        // set text
-        document.getElementById('status-text').textContent = latest.text;
-
-        // 🔧 FIX: remove seconds from display
-        document.getElementById('status-date').textContent =
-            date.toLocaleString('en-GB', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-
-    })
-
-    .catch(err => {
-
-        // 🔧 helpful debug if something still fails
-        console.error("Status failed to load:", err);
-
+    cards.forEach((card, i) => {
+        card.classList.toggle("active", i === index);
     });
 
+    dots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === index);
+    });
 
-// tumblr dropdown toggle
+    current = index;
+}
+
+document.getElementById("next").addEventListener("click", () => {
+    showCard((current + 1) % cards.length);
+});
+
+document.getElementById("prev").addEventListener("click", () => {
+    showCard((current - 1 + cards.length) % cards.length);
+});
+
+dots.forEach((dot, index) => {
+    dot.addEventListener("click", () => showCard(index));
+});
+
+document.addEventListener("keydown", e => {
+
+    if (e.key === "ArrowRight") {
+        showCard((current + 1) % cards.length);
+    }
+
+    if (e.key === "ArrowLeft") {
+        showCard((current - 1 + cards.length) % cards.length);
+    }
+
+});
+
+let startX = 0;
+
+const carousel = document.querySelector(".carousel");
+
+carousel.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+});
+
+carousel.addEventListener("touchend", e => {
+
+    const endX = e.changedTouches[0].clientX;
+
+    if (startX - endX > 50) {
+        showCard((current + 1) % cards.length);
+    }
+
+    if (endX - startX > 50) {
+        showCard((current - 1 + cards.length) % cards.length);
+    }
+
+});
+
 function toggleTumblrMenu(event) {
 
     event.preventDefault();
 
-    const menu = document.getElementById("tumblrMenu");
+    document.getElementById("tumblrMenu").classList.toggle("show");
 
-    menu.classList.toggle("show");
 }
+
+showCard(0);
 
 </script>
 
 </body>
-
 </html>
