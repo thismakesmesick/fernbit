@@ -5,167 +5,120 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>fernbit</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        #prank-site { min-height: 80vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:1.5rem; }
+        #prank-site h1 { font-size:clamp(3rem,10vw,8rem); color:#C90A5D; line-height:.9; transform:rotate(-2deg); }
+        #prank-site .uh { font-size:clamp(1.5rem,5vw,3rem); letter-spacing:.2em; animation:uh .35s infinite alternate; }
+        #prank-site img { width:min(420px,80vw); max-height:300px; object-fit:contain; border:2px solid #C90A5D; padding:1rem; background:#000; }
+        #restore-normal { border:1px solid #666; background:#000; color:#aaa; padding:.7rem 1rem; font:inherit; cursor:pointer; }
+        #restore-normal:hover { color:#fff; border-color:#C90A5D; }
+        #normal-site.is-hidden, #prank-site.is-hidden { display:none; }
+        @keyframes uh { from { transform:translateX(-3px) rotate(-1deg); } to { transform:translateX(3px) rotate(1deg); } }
+    </style>
 </head>
-
 <body>
 
+<div id="prank-site" aria-label="Fernbit temporary prank page">
+    <h1>HUH HUH<br>NOSY COLLEAGUES</h1>
+    <div class="uh">UH UH UH</div>
+    <img src="https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyb3F1bXV2MWhjc2FzZnNqajIwN243eWF4cng3ZTJvZGhyZHo0YmFsdSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9ZQ/VDNDX5BhKKz0YsJkl0/giphy.gif" alt="Animated eyes looking around">
+    <button id="uh-button" type="button">UH UH UH</button>
+    <button id="restore-normal" type="button">restore normal fernbit</button>
+</div>
+
+<div id="normal-site">
 <header id="fernbit">
     <h1>fernbit</h1>
 </header>
-
 <nav id="main-navigation">
     <ul>
         <li><a href="index.html">Home</a></li>
-<li><a href="about.html">About</a></li>
- <li>
-    <a href="https://thismakesmesick.tumblr.com/?source=share" target="_blank">
-        Tumblr
-    </a>
-        </li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="https://thismakesmesick.tumblr.com/?source=share" target="_blank">Tumblr</a></li>
         <li><a href="contact.html">Contact</a></li>
-
     </ul>
 </nav>
 <main id="main-content">
-
 <section id="featured-posts">
-
     <button class="carousel-button" id="prev">&#10094;</button>
-
     <div class="carousel">
-
         <a class="post-card active" href="blog%20posts/03-05-26.html">
-
             <p class="post-date">03 May 2026</p>
-
             <h2>Jenlena Is Too Relatable</h2>
-
-            <p>
-                On unemployment, Mood Swings, alcoholism, puppy play,
-                dissociation and the strange comfort of seeing yourself
-                reflected in someone else's mess.
-            </p>
-
+            <p>On unemployment, Mood Swings, alcoholism, puppy play, dissociation and the strange comfort of seeing yourself reflected in someone else's mess.</p>
         </a>
-
         <a class="post-card" href="blog%20posts/post2.html">
-
             <p class="post-date">Coming Soon</p>
-
             <h2>Untitled</h2>
-
-            <p>
-                Placeholder for a future post.
-            </p>
-
+            <p>Placeholder for a future post.</p>
         </a>
-
         <a class="post-card" href="blog%20posts/post3.html">
-
             <p class="post-date">Coming Soon</p>
-
             <h2>Untitled</h2>
-
-            <p>
-                Placeholder for another future post.
-            </p>
-
+            <p>Placeholder for another future post.</p>
         </a>
-
     </div>
-
     <button class="carousel-button" id="next">&#10095;</button>
-
 </section>
-
 <div class="carousel-dots">
-
     <button class="dot active"></button>
     <button class="dot"></button>
     <button class="dot"></button>
-
 </div>
 <p id="carousel-counter">1 / 3</p>
 </main>
+</div>
+
 <script>
+const prankSite = document.getElementById('prank-site');
+const normalSite = document.getElementById('normal-site');
+const params = new URLSearchParams(location.search);
+if (params.has('nosy')) localStorage.removeItem('fernbit-normal');
+const normal = localStorage.getItem('fernbit-normal') === '1' || params.has('normal');
+function setMode(showNormal) {
+    prankSite.classList.toggle('is-hidden', showNormal);
+    normalSite.classList.toggle('is-hidden', !showNormal);
+    if (showNormal) localStorage.setItem('fernbit-normal', '1');
+    else localStorage.removeItem('fernbit-normal');
+}
+setMode(normal);
+function uhUhUh() {
+    if ('speechSynthesis' in window) {
+        speechSynthesis.cancel();
+        const voice = new SpeechSynthesisUtterance('uh uh uh');
+        voice.rate = 1.15;
+        voice.pitch = .75;
+        speechSynthesis.speak(voice);
+    }
+}
+document.getElementById('uh-button').addEventListener('click', uhUhUh);
+document.getElementById('restore-normal').addEventListener('click', () => setMode(true));
 
-const cards = document.querySelectorAll(".post-card");
-const dots = document.querySelectorAll(".dot");
-
+const cards = document.querySelectorAll('.post-card');
+const dots = document.querySelectorAll('.dot');
 let current = 0;
-
 function showCard(index) {
-
-    cards.forEach((card, i) => {
-        card.classList.toggle("active", i === index);
-    });
-
-    dots.forEach((dot, i) => {
-        dot.classList.toggle("active", i === index);
-    });
-
+    cards.forEach((card, i) => card.classList.toggle('active', i === index));
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
     current = index;
-    document.getElementById("carousel-counter").textContent =
-    `${index + 1} / ${cards.length}`;
+    document.getElementById('carousel-counter').textContent = `${index + 1} / ${cards.length}`;
 }
-
-document.getElementById("next").addEventListener("click", () => {
-    showCard((current + 1) % cards.length);
+document.getElementById('next').addEventListener('click', () => showCard((current + 1) % cards.length));
+document.getElementById('prev').addEventListener('click', () => showCard((current - 1 + cards.length) % cards.length));
+dots.forEach((dot, index) => dot.addEventListener('click', () => showCard(index)));
+document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') showCard((current + 1) % cards.length);
+    if (e.key === 'ArrowLeft') showCard((current - 1 + cards.length) % cards.length);
 });
-
-document.getElementById("prev").addEventListener("click", () => {
-    showCard((current - 1 + cards.length) % cards.length);
-});
-
-dots.forEach((dot, index) => {
-    dot.addEventListener("click", () => showCard(index));
-});
-
-document.addEventListener("keydown", e => {
-
-    if (e.key === "ArrowRight") {
-        showCard((current + 1) % cards.length);
-    }
-
-    if (e.key === "ArrowLeft") {
-        showCard((current - 1 + cards.length) % cards.length);
-    }
-
-});
-
 let startX = 0;
-
-const carousel = document.querySelector(".carousel");
-
-carousel.addEventListener("touchstart", e => {
-    startX = e.touches[0].clientX;
-});
-
-carousel.addEventListener("touchend", e => {
-
+const carousel = document.querySelector('.carousel');
+carousel.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+carousel.addEventListener('touchend', e => {
     const endX = e.changedTouches[0].clientX;
-
-    if (startX - endX > 50) {
-        showCard((current + 1) % cards.length);
-    }
-
-    if (endX - startX > 50) {
-        showCard((current - 1 + cards.length) % cards.length);
-    }
-
+    if (startX - endX > 50) showCard((current + 1) % cards.length);
+    if (endX - startX > 50) showCard((current - 1 + cards.length) % cards.length);
 });
-
-function toggleTumblrMenu(event) {
-
-    event.preventDefault();
-
-    document.getElementById("tumblrMenu").classList.toggle("show");
-
-}
-
 showCard(0);
-
 </script>
-
 </body>
 </html>
